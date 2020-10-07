@@ -1,0 +1,67 @@
+﻿@model chat.Models.RegisterViewModel
+@{
+    ViewData["Title"] = "User Register";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <div class="maintitle text-light">
+                <b>Thank you to accept</b>
+                <p>
+                    <t style="color:deeppink">C-Chat</t>!
+                </p>
+            </div>
+            <br>
+            <t class="secondtitle text-light">
+                Already a member?
+                <t class="secondmarkertext">
+                    <a href="@Url.ActionLink("Login", "Account")"
+                       class="nav-link" style="color:aqua">Login</a>
+                </t>
+            </t>
+        </div>
+        <div class="col-sm">
+
+            <form method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="authcontainer cardflat">
+                    <div class="row justify-content-center">
+                        <label class="text-light" asp-for="UserName"></label>
+                    </div>
+                    <div class="row justify-content-center">
+                        <input class="concavecard text-white" asp-for="UserName" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <label class="text-light" asp-for="Email"></label>
+                    </div>
+                    <div class="row justify-content-center">
+                        <input class="concavecard text-white" asp-for="Email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <label class="text-light" asp-for="Password"></label>
+                    </div>
+                    <div class="row justify-content-center">
+                        <input class="concavecard text-white" asp-for="Password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <label class="text-light" asp-for="ConfirmPassword"></label>
+                    </div>
+                    <div class="row justify-content-center">
+                        <input class="concavecard text-white" asp-for="ConfirmPassword" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <div class="row justify-content-center">
+                        <button class="signupbutton text-light" type="submit">Register</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

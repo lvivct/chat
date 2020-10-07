@@ -1,0 +1,160 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+.back {
+    background: #1c262c;
+}
+
+
+/*neomorphisp cards*/
+.cardconvex {
+    border-radius: 50px;
+    background: linear-gradient(145deg, #1e292f, #192228);
+    box-shadow: 20px 20px 31px #141b20, -20px -20px 31px #243138;
+}
+.cardflat {
+    border-radius: 2px;
+    background: #1c262c;
+    box-shadow: 20px 20px 31px #182025, -20px -20px 31px #202c33;
+}
+.btn-primary {
+    border-radius: 50px;
+    background: #1c262c;
+    box-shadow: 20px 20px 60px #182025, -20px -20px 60px #202c33;
+}
+ .concavecard {
+    border-radius: 50px;
+    background: linear-gradient(145deg, #192228, #1e292f);
+    box-shadow: 20px 20px 31px #141b20, -20px -20px 31px #243138;
+}
+input {
+    width: 50%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: none;
+}
+input:focus {
+    border: none;
+    outline: none;
+}
+/*Main titles design*/
+.maintitlecont{
+    padding:10%;
+}
+.maintitle {
+    font-size: 80px;  
+}
+.secondtitle {
+    font-size: 50px;
+}
+
+.markertext {
+    color: aqua;
+}
+.secondmarkertext {
+   
+    text-decoration-style:solid;
+    text-align:right;
+}
+
+/*Auth form design*/
+.authcontainer{
+    margin-top:10%;
+    width:100%;
+    height:90%;
+    align-content:center;
+    padding:50px;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    border-radius: 50px;
+    color: deeppink;
+    box-shadow: 20px 20px 60px #182025, -20px -20px 60px #202c33;
+}
+
+.headerbutton {
+    width: 100px;
+    margin-right:24px;
+    text-align:center;
+}
+button {
+    border: none;
+    outline: none;
+}
+button:focus {
+    border: none;
+    outline: none;
+}
+.loginbutton {
+    width: 150px;
+    height: 40px;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #ff159d, #e61284);
+    box-shadow: 20px 20px 31px #b80e6a, -20px -20px 31px #ff1abc05;
+}
+.signupbutton {
+    width: 150px;
+    height: 40px;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #00ffff, #00e6e6);
+    box-shadow: 10px 10px 20px #00d1d1, -10px -10px 20px #00ffff05;
+}
+/*logo design*/
+.logo {
+    width:50px;
+    height:50px;
+    font-size:32px;
+    text-align:center;
+    color:aqua;
+    margin-right:24px;
+}
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; /* Vertically center the text there */
+}
