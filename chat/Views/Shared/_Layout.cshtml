@@ -1,4 +1,4 @@
-﻿@inject Microsoft.AspNetCore.Identity.SignInManager<Microsoft.AspNetCore.Identity.IdentityUser> signInManager;
+﻿@inject SignInManager<IdentityUser> signInManager;
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +22,7 @@
                     <span class="navbar-toggler-icon"></span>
 
                 </button>
-
+                
                 @if (signInManager.IsSignedIn(User))
                 {
                     <form method="post" asp-action="logout" asp-controller="account">
@@ -37,11 +37,11 @@
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-light headerbutton cardconvex"
-                               href="@Url.ActionLink("Login", "Account")">Log in</a>
+                               asp-action="login" asp-controller="account">Login</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light headerbutton cardconvex"
-                               href="@Url.ActionLink("Register", "Account")">Sign up</a>
+                               asp-action="register" asp-controller="account">Sign up</a>
                         </li>
                     </ul>
                 </div>

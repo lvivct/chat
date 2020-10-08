@@ -1,9 +1,18 @@
-﻿@{
+﻿@inject SignInManager<IdentityUser> signInManager;
+@{
     ViewBag.Title = "Not Found";
 }
 
-<h1 class ="text-light">@ViewBag.ErrorMessage</h1>
-
-<a asp-action="index" asp-controller="home" >
-    Click here to navigate to the home page
-</a>
+<h1 class="text-light">@ViewBag.ErrorMessage</h1>
+    @if (signInManager.IsSignedIn(User))
+    {
+        <a asp-action="Hello" asp-controller="MainMenu">
+            Click here to navigate to the home page
+        </a>
+    }
+    else
+    {
+        <a asp-action="Register" asp-controller="Account">
+            Click here to navigate to the home page
+        </a>
+    }
