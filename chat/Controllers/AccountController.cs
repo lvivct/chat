@@ -10,12 +10,12 @@ namespace chat.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> userManager; 
+        private readonly UserManager<AppUser> userManager; 
 
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly SignInManager<AppUser> signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -39,7 +39,7 @@ namespace chat.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser
+                var user = new AppUser
                 {
                     UserName = model.UserName,
                     Email = model.Email,
@@ -49,7 +49,7 @@ namespace chat.Controllers
                 if (result.Succeeded)
                 {
                     await signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Login", "Account");
+                    return RedirectToAction("Hello", "MainMenu");
                 }
                 foreach (var error in result.Errors)
                 {

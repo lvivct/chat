@@ -36,9 +36,11 @@ namespace chat
                     Configuration.GetConnectionString("FirstDataBase")));
 
             services.AddControllersWithViews().AddXmlSerializerFormatters();
+            services.AddTransient<IChatRepository, SqlChatRepository>();
+
             services.AddRazorPages();
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>();
         }
 
