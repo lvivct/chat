@@ -37,6 +37,7 @@ namespace chat
 
             services.AddControllersWithViews().AddXmlSerializerFormatters();
             services.AddTransient<IChatRepository, SqlChatRepository>();
+            services.AddTransient<IMessageRepository, SqlMessageRepository>();
 
             services.AddRazorPages();
 
@@ -66,7 +67,7 @@ namespace chat
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Account}/{action=Register}/{id?}");
+                    pattern: "{controller=MainMenu}/{action=Hello}/{id?}");
             });
         }
     }

@@ -22,9 +22,9 @@ namespace chat.Models
             context.SaveChanges();
             return chat;
         }
-        public Chat Delete(int ID)
+        public Chat Delete(string Id)
         {
-            Chat chat = context.ChatsDatabase.Find(ID);
+            Chat chat = context.ChatsDatabase.Find(Id);
             if (chat != null)
             {
                 context.ChatsDatabase.Remove(chat);
@@ -36,9 +36,9 @@ namespace chat.Models
         {
             return context.ChatsDatabase;
         }
-        public Chat GetChats(int id)
+        public Chat GetChat(string Id)
         {
-            return context.ChatsDatabase.Find(id);
+            return context.ChatsDatabase.Find(Id);
         }
         public Chat Update(Chat chat)
         {

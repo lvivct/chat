@@ -7,10 +7,10 @@ namespace chat.Models
 {
     public interface IChatRepository
     {
-        Chat GetChats(int id);
+        Chat GetChat(string Id);
         IEnumerable<Chat> GetAllChats();
-        Chat Add(Chat guy);
-        Chat Update(Chat guy);
-        Chat Delete(int ID);
+        Chat Add(Chat chat);
+        Chat Update(Chat chat);
+        Chat Delete(string ID);
     }
 }
