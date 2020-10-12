@@ -8,6 +8,6 @@ namespace chat.Models
 {
     public class AppUser : IdentityUser
     {
-        public ICollection<Chat> Chats { get; set; }
+        public ICollection<AppUserChat> AppUsersChats { get; set; }
     }
 }

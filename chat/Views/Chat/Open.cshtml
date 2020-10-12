@@ -6,7 +6,7 @@
 {
     @foreach (var messages in Model.Messages)
     {
-        <h1 style="color:deeppink">@Model.Sender: @messages.MessageText</h1>
+        <h1 style="color:deeppink">@messages.SenderName: @messages.MessageText</h1>
     }
 }
 <form asp-controller="Chat" asp-action="Open" method="post">
@@ -25,3 +25,4 @@
     </div>
 </form>
 <a asp-action="Chats" asp-controller="Chat">Back</a>
+<a asp-action="AddMemder" asp-controller="Chat" asp-route-chatId="@Model.ChatId">Add</a>

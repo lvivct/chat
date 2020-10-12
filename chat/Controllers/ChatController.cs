@@ -16,20 +16,27 @@ namespace chat.Controllers
         private readonly AppDbContext AppDb;
         private readonly IChatRepository ChatsRepository;
         private readonly IMessageRepository MessagesRepository;
+        private readonly IAppUserChatRepository AppUserChatRepository;
 
         public ChatController(IChatRepository chatsRepository, IMessageRepository messagesRepository
-            , AppDbContext appDb)
+            , IAppUserChatRepository appUserChatRepository, AppDbContext appDb)
         {
             MessagesRepository = messagesRepository;
             ChatsRepository = chatsRepository;
+            AppUserChatRepository = appUserChatRepository;
             AppDb = appDb;
         }
 
         public IActionResult Chats()
         {
             var CurrentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var CurrentUser = AppDb.Users.Include("Chats").ToList().Find(e => e.Id == CurrentUserId);
-            return View(CurrentUser.Chats);
+            var AllUsers = AppDb.Users
+                        .Include(x => x.AppUsersChats)
+                        .ThenInclude(x => x.Chat);
+
+            var CurrentUser = AllUsers.ToList().Find(e => e.Id == CurrentUserId);
+            var Chats = CurrentUser.AppUsersChats.ToList();
+            return View(Chats);
         }
 
         [HttpGet]
@@ -42,13 +49,19 @@ namespace chat.Controllers
         {
             if (ModelState.IsValid)
             {
-                var CurrentUser = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 Chat newchat = new Chat
                 {
                     ChatName = model.ChatName,
-                    UserId = CurrentUser
                 };
                 ChatsRepository.Add(newchat);
+
+                var CurrentUser = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                AppUserChat newAppUserChat = new AppUserChat
+                {
+                    ChatId = newchat.ChatId,
+                    UserId = CurrentUser
+                };
+                AppUserChatRepository.Add(newAppUserChat);
                 return RedirectToAction("Chats", "Chat");
             }
             return View();
@@ -62,8 +75,7 @@ namespace chat.Controllers
                 .ToList().Find(e => e.ChatId == chatId);
 
             ChatViewModel NewView = new ChatViewModel
-            { 
-                Sender = CurrentUserName,
+            {
                 ChatId = CurrentChat.ChatId,
                 ChatName = CurrentChat.ChatName,
                 Messages = CurrentChat.Messages
@@ -88,12 +100,41 @@ namespace chat.Controllers
             }
             ChatViewModel NewView = new ChatViewModel
             {
-                Sender = CurrentUserName,
                 ChatId = CurrentChat.ChatId,
                 ChatName = CurrentChat.ChatName,
                 Messages = CurrentChat.Messages
             };
             return RedirectToAction("Open", "Chat", new { chatId = chatId });
+        }
+
+
+        [HttpGet]
+        public IActionResult AddMemder(string chatId)
+        {
+            AddUserViewModel NewView = new AddUserViewModel
+            {
+                ChatId = chatId
+            };
+            return View(NewView);
+        }
+       [HttpPost]
+        public IActionResult AddMemder(string chatId, string userName)
+        {
+            if (ModelState.IsValid)
+            {
+                var CurrentUser =
+                    AppDb.Users
+                    .Where(b => b.UserName == userName)
+                    .FirstOrDefault();
+                AppUserChat newAppUserChat = new AppUserChat
+                {
+                    ChatId = chatId,
+                    UserId = CurrentUser.Id
+                };
+                AppUserChatRepository.Add(newAppUserChat);
+                return RedirectToAction("Chats", "Chat");
+            }
+            return View();
         }
     }
 }

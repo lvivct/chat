@@ -37,6 +37,7 @@ namespace chat
 
             services.AddControllersWithViews().AddXmlSerializerFormatters();
             services.AddTransient<IChatRepository, SqlChatRepository>();
+            services.AddTransient<IAppUserChatRepository, SqlAppUserChatRepository>();
             services.AddTransient<IMessageRepository, SqlMessageRepository>();
 
             services.AddRazorPages();

@@ -1,9 +1,9 @@
-﻿@model ICollection<Chat>
+﻿@model ICollection<AppUserChat>
 
 @foreach (var chat in Model)
 {
     <a href="@Url.ActionLink("Open", "Chat", new { chatId = chat.ChatId })"
-       class="btn btn-primary m-1">@chat.ChatName</a>
+       class="btn btn-primary m-1">@chat.Chat.ChatName</a>
 }
 <a asp-controller="Chat" asp-action="Create"
    class="nav-link" style="color:deeppink">

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using chat.Models;
 
 namespace chat.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201011200953_AppUserChatManyToMany")]
+    partial class AppUserChatManyToMany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,7 +233,7 @@ namespace chat.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ChatsUsersDatabase");
+                    b.ToTable("AppUserChat");
                 });
 
             modelBuilder.Entity("chat.Models.Chat", b =>
@@ -249,7 +251,7 @@ namespace chat.Migrations
 
                     b.HasKey("ChatId");
 
-                    b.ToTable("ChatsDatabase");
+                    b.ToTable("Chat");
                 });
 
             modelBuilder.Entity("chat.Models.Message", b =>

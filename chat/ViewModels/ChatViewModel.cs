@@ -13,7 +13,6 @@ namespace chat.ViewModels
         [Required]
         public string MessageText { get; set; }
         public string ChatId { get; set; }
-        public string Sender { get; set; }
         public ICollection<Message> Messages { get; set; }
     }
 }

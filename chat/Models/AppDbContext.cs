@@ -9,12 +9,18 @@ namespace chat.Models
             : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Chat>()
-                .HasOne(p => p.User)
-                .WithMany(b => b.Chats)
-                .HasForeignKey(b => b.UserId);
-            
+            modelBuilder.Entity<AppUserChat>().HasKey(sc => new { sc.ChatId, sc.UserId });
+
+            modelBuilder.Entity<AppUserChat>()
+                .HasOne<Chat>(sc => sc.Chat)
+                .WithMany(s => s.AppUsersChats)
+                .HasForeignKey(sc => sc.ChatId);
+
+            modelBuilder.Entity<AppUserChat>()
+                .HasOne<AppUser>(sc => sc.User)
+                .WithMany(s => s.AppUsersChats)
+                .HasForeignKey(sc => sc.UserId);
+
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Message>()
                 .HasOne(p => p.Chat)
@@ -23,5 +29,7 @@ namespace chat.Models
         }
         public DbSet<Message> MessagesDatabase { get; set; }
         public DbSet<Chat> ChatsDatabase { get; set; }
+        public DbSet<AppUserChat> ChatsUsersDatabase { get; set; }
+
     }
 }
