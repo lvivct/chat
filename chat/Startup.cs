@@ -27,6 +27,7 @@ namespace chat
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.Configure<IdentityOptions>(options =>
             options.Password.RequireNonAlphanumeric = false
             );
@@ -58,12 +59,12 @@ namespace chat
                 app.UseStatusCodePagesWithRedirects("/Error/{0}");
             }
 
-            app.UseHttpsRedirection();
-
             app.UseStaticFiles();
+            app.UseHttpsRedirection();
             app.UseAuthentication();
-            app.UseRouting();
 
+            app.UseRouting();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

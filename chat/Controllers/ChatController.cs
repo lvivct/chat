@@ -5,12 +5,14 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using chat.Models;
 using chat.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 
 namespace chat.Controllers
 {
+    [Authorize]
     public class ChatController : Controller
     {
         private readonly AppDbContext AppDb;
@@ -82,9 +84,13 @@ namespace chat.Controllers
             };
             return View(NewView);
         }
+
         [HttpPost]
         public IActionResult Open(string chatId, string messageText)
         {
+            if(messageText == null)
+                return RedirectToAction("Open", "Chat", new { chatId = chatId });
+
             var CurrentUserName = User.FindFirst(ClaimTypes.Name).Value;
             var CurrentChat = AppDb.ChatsDatabase.Include("Messages")
                .ToList().Find(e => e.ChatId == chatId);
@@ -94,8 +100,10 @@ namespace chat.Controllers
                 {
                     MessageText = messageText,
                     SenderName = CurrentUserName,
-                    ChatId = CurrentChat.ChatId
+                    ChatId = CurrentChat.ChatId,
+                    When = DateTime.Now
                 };
+                newmessage.MessageId = MessagesRepository.GetAllMessages().Count() + "";
                 MessagesRepository.Add(newmessage);
             }
             ChatViewModel NewView = new ChatViewModel
@@ -122,17 +130,40 @@ namespace chat.Controllers
         {
             if (ModelState.IsValid)
             {
-                var CurrentUser =
-                    AppDb.Users
+                var User = AppDb.Users
                     .Where(b => b.UserName == userName)
                     .FirstOrDefault();
-                AppUserChat newAppUserChat = new AppUserChat
+
+                short exeption = 0;
+                if (User == null)
+                    exeption = 1;
+                else
                 {
-                    ChatId = chatId,
-                    UserId = CurrentUser.Id
+                    AppUserChat newAppUserChat = new AppUserChat
+                    {
+                        ChatId = chatId,
+                        UserId = User.Id
+                    };
+                    foreach (var x in AppUserChatRepository.GetAllAppUsersChats().ToList())
+                        if (x.ChatId == newAppUserChat.ChatId && x.UserId == newAppUserChat.UserId)
+                        {
+                            exeption = 2;
+                        }
+                    if (exeption == 0)
+                    {
+                        AppUserChatRepository.Add(newAppUserChat);
+                        return RedirectToAction("Chats", "Chat");
+                    }
+                }
+                if (exeption == 1)
+                    ModelState.AddModelError(string.Empty, "This User doesn't exist");
+                else
+                    ModelState.AddModelError(string.Empty, "This User already added");
+                AddUserViewModel NewView = new AddUserViewModel
+                {
+                    ChatId = chatId
                 };
-                AppUserChatRepository.Add(newAppUserChat);
-                return RedirectToAction("Chats", "Chat");
+                return View(NewView);
             }
             return View();
         }

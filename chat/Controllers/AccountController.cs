@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace chat.Controllers
 {
+
     public class AccountController : Controller
     {
         private readonly UserManager<AppUser> userManager; 

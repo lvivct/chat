@@ -9,7 +9,6 @@ namespace chat.Models
 {
     public class Message
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public string MessageId { get; set; }
         [Required]

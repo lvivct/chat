@@ -22,7 +22,7 @@ namespace chat.Models
         [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
         [Compare("Password",
-            ErrorMessage = "password and confirm password do not match.")]
+            ErrorMessage = "Password and Confirm Password do not match.")]
         public string ConfirmPassword { get; set; }
     }
 }

@@ -25,7 +25,7 @@
         <div class="col-sm">
             <div class="authcontainer cardflat">
                 <form method="post">
-
+                    <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="row justify-content-center">
                         <label class="text-light" asp-for="UserName"></label>
                     </div>
@@ -42,7 +42,7 @@
                     </div>
                     <div class="form-group">
                         <div class="custom-checkbox text-white">
-                            <label  asp-for="RememberMe">
+                            <label asp-for="RememberMe">
                                 <input asp-for="RememberMe" />
                                 @Html.DisplayNameFor(m => m.RememberMe)
                             </label>

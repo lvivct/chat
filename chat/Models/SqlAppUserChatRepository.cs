@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace chat.Models
@@ -32,7 +33,7 @@ namespace chat.Models
         {
             return context.ChatsUsersDatabase;
         }
-        public AppUserChat GetAppUser(string Id)
+        public AppUserChat GetAppUserChat(string Id)
         {
             return context.ChatsUsersDatabase.Find(Id);
         }

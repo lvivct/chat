@@ -1,6 +1,7 @@
 ﻿@model chat.ViewModels.AddUserViewModel
 
 <form asp-controller="Chat" asp-action="AddMemder" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
     <input asp-for="ChatId" value="@Model.ChatId" type="hidden" />
     <div class="form-group row">
         <label asp-for="UserName" class="col-sm-2 col-form-label"></label>

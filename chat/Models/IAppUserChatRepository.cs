@@ -7,7 +7,7 @@ namespace chat.Models
 {
     public interface IAppUserChatRepository
     {
-        AppUserChat GetAppUser(string Id);
+        AppUserChat GetAppUserChat(string Id);
         IEnumerable<AppUserChat> GetAllAppUsersChats();
         AppUserChat Add(AppUserChat chat);
         AppUserChat Update(AppUserChat chat);
