@@ -13,23 +13,17 @@ using Microsoft.VisualBasic;
 namespace chat.Controllers
 {
     [Authorize]
+    [Route("[Controller]")]
     public class ChatController : Controller
     {
         private readonly AppDbContext AppDb;
-        private readonly IChatRepository ChatsRepository;
-        private readonly IMessageRepository MessagesRepository;
-        private readonly IAppUserChatRepository AppUserChatRepository;
-
-        public ChatController(IChatRepository chatsRepository, IMessageRepository messagesRepository
-            , IAppUserChatRepository appUserChatRepository, AppDbContext appDb)
+        public ChatController(AppDbContext appDb)
         {
-            MessagesRepository = messagesRepository;
-            ChatsRepository = chatsRepository;
-            AppUserChatRepository = appUserChatRepository;
             AppDb = appDb;
         }
 
-        public IActionResult Chats()
+        [Route("[Action]")]
+        public IActionResult AllChats()
         {
             var CurrentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var AllUsers = AppDb.Users
@@ -41,12 +35,13 @@ namespace chat.Controllers
             return View(Chats);
         }
 
-        [HttpGet]
+
+        [HttpGet("[Action]")]
         public IActionResult Create()
         {
             return View();
         }
-        [HttpPost]
+        [HttpPost("[Action]")]
         public IActionResult Create(Chat model)
         {
             if (ModelState.IsValid)
@@ -55,24 +50,25 @@ namespace chat.Controllers
                 {
                     ChatName = model.ChatName,
                 };
-                ChatsRepository.Add(newchat);
+                AppDb.ChatsDatabase.Add(newchat);
+                AppDb.SaveChanges();
 
-                var CurrentUser = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 AppUserChat newAppUserChat = new AppUserChat
                 {
                     ChatId = newchat.ChatId,
-                    UserId = CurrentUser
-                };
-                AppUserChatRepository.Add(newAppUserChat);
-                return RedirectToAction("Chats", "Chat");
+                    UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value
+            };
+                AppDb.ChatsUsersDatabase.Add(newAppUserChat);
+                AppDb.SaveChanges();
+                return RedirectToAction("AllChats", "Chat");
             }
             return View();
         }
 
-        [HttpGet]
+
+        [HttpGet("{chatId}")]
         public IActionResult Open(string chatId)
         {
-            var CurrentUserName = User.FindFirst(ClaimTypes.Name).Value;
             var CurrentChat = AppDb.ChatsDatabase.Include("Messages")
                 .ToList().Find(e => e.ChatId == chatId);
 
@@ -85,13 +81,12 @@ namespace chat.Controllers
             return View(NewView);
         }
 
-        [HttpPost]
-        public IActionResult Open(string chatId, string messageText)
+        [HttpPost("[Action]")]
+        public IActionResult WriteMessage(string chatId, string messageText)
         {
-            if(messageText == null)
+            if (messageText == null)
                 return RedirectToAction("Open", "Chat", new { chatId = chatId });
 
-            var CurrentUserName = User.FindFirst(ClaimTypes.Name).Value;
             var CurrentChat = AppDb.ChatsDatabase.Include("Messages")
                .ToList().Find(e => e.ChatId == chatId);
             if (ModelState.IsValid)
@@ -99,12 +94,11 @@ namespace chat.Controllers
                 Message newmessage = new Message
                 {
                     MessageText = messageText,
-                    SenderName = CurrentUserName,
+                    SenderName = User.Identity.Name,
                     ChatId = CurrentChat.ChatId,
-                    When = DateTime.Now
                 };
-                newmessage.MessageId = MessagesRepository.GetAllMessages().Count() + "";
-                MessagesRepository.Add(newmessage);
+                AppDb.MessagesDatabase.Add(newmessage);
+                AppDb.SaveChanges();
             }
             ChatViewModel NewView = new ChatViewModel
             {
@@ -116,7 +110,7 @@ namespace chat.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("[Action]/{chatId}")]
         public IActionResult AddMemder(string chatId)
         {
             AddUserViewModel NewView = new AddUserViewModel
@@ -125,13 +119,14 @@ namespace chat.Controllers
             };
             return View(NewView);
         }
-       [HttpPost]
-        public IActionResult AddMemder(string chatId, string userName)
+
+        [HttpPost("[Action]/{chatId}")]
+        public IActionResult AddMemder(AddUserViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var User = AppDb.Users
-                    .Where(b => b.UserName == userName)
+                    .Where(b => b.UserName == model.UserName)
                     .FirstOrDefault();
 
                 short exeption = 0;
@@ -141,31 +136,31 @@ namespace chat.Controllers
                 {
                     AppUserChat newAppUserChat = new AppUserChat
                     {
-                        ChatId = chatId,
+                        ChatId = model.ChatId,
                         UserId = User.Id
                     };
-                    foreach (var x in AppUserChatRepository.GetAllAppUsersChats().ToList())
+                    foreach (var x in AppDb.ChatsUsersDatabase.ToList())
                         if (x.ChatId == newAppUserChat.ChatId && x.UserId == newAppUserChat.UserId)
                         {
                             exeption = 2;
                         }
                     if (exeption == 0)
                     {
-                        AppUserChatRepository.Add(newAppUserChat);
-                        return RedirectToAction("Chats", "Chat");
+                        AppDb.ChatsUsersDatabase.Add(newAppUserChat);
+                        AppDb.SaveChanges();
+                        return RedirectToAction("AllChats", "Chat");
                     }
                 }
                 if (exeption == 1)
                     ModelState.AddModelError(string.Empty, "This User doesn't exist");
                 else
                     ModelState.AddModelError(string.Empty, "This User already added");
-                AddUserViewModel NewView = new AddUserViewModel
-                {
-                    ChatId = chatId
-                };
-                return View(NewView);
             }
-            return View();
+            AddUserViewModel NewView = new AddUserViewModel
+            {
+                ChatId = model.ChatId
+            };
+            return View(NewView);
         }
     }
 }

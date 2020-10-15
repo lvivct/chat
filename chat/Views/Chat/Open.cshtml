@@ -4,12 +4,13 @@
 
 @if (Model.Messages != null)
 {
-    @foreach (var messages in Model.Messages)
+    @foreach (var messages in Model.Messages.OrderBy(m => m.When))
     {
         <h1 style="color:deeppink">@messages.SenderName: @messages.MessageText</h1>
     }
 }
-<form asp-controller="Chat" asp-action="Open" method="post">
+
+<form asp-controller="Chat" asp-action="WriteMessage" method="post">
     <input asp-for="ChatId" value="@Model.ChatId" type="hidden" />
     <div class="form-group row">
         <label asp-for="MessageText" class="col-sm-2 col-form-label"></label>
@@ -24,5 +25,5 @@
         </div>
     </div>
 </form>
-<a asp-action="Chats" asp-controller="Chat">Back</a>
+<a asp-action="AllChats" asp-controller="Chat">Back</a>
 <a asp-action="AddMemder" asp-controller="Chat" asp-route-chatId="@Model.ChatId">Add</a>

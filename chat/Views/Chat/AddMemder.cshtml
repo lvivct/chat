@@ -1,8 +1,9 @@
 ﻿@model chat.ViewModels.AddUserViewModel
 
-<form asp-controller="Chat" asp-action="AddMemder" method="post">
+<form asp-controller="Chat" asp-action="AddMemder" 
+      asp-route-ChatId="@Model.ChatId">
+
     <div asp-validation-summary="All" class="text-danger"></div>
-    <input asp-for="ChatId" value="@Model.ChatId" type="hidden" />
     <div class="form-group row">
         <label asp-for="UserName" class="col-sm-2 col-form-label"></label>
         <div class="col-sm-10">
@@ -12,7 +13,8 @@
 
     <div class="form-group row">
         <div class="col-sm-10">
-            <button type="submit" class="btn btn-primary">Send</button>
+            <button class="btn btn-primary">Send</button>
         </div>
     </div>
+
 </form>

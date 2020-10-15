@@ -9,6 +9,11 @@ namespace chat.Models
 {
     public class Message
     {
+        public Message()
+        {
+            When = DateTime.Now;
+        }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public string MessageId { get; set; }
         [Required]

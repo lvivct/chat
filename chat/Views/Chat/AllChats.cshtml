@@ -2,7 +2,7 @@
 
 @foreach (var chat in Model)
 {
-    <a href="@Url.ActionLink("Open", "Chat", new { chatId = chat.ChatId })"
+    <a asp-action = "Open" asp -controller = "Chat" asp-route-chatId = "@chat.ChatId"
        class="btn btn-primary m-1">@chat.Chat.ChatName</a>
 }
 <a asp-controller="Chat" asp-action="Create"
