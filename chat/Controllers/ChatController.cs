@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using chat.Models;
 using chat.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
 
 namespace chat.Controllers
 {
     [Authorize]
-    [Route("[Controller]")]
+    //[Route("[Controller]")]
     public class ChatController : Controller
     {
         private readonly AppDbContext AppDb;
@@ -22,7 +18,7 @@ namespace chat.Controllers
             AppDb = appDb;
         }
 
-        [Route("[Action]")]
+        //[Route("[Action]")]
         public IActionResult AllChats()
         {
             var CurrentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -36,12 +32,14 @@ namespace chat.Controllers
         }
 
 
-        [HttpGet("[Action]")]
+        //[HttpGet("[Action]")]
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
-        [HttpPost("[Action]")]
+        //[HttpPost("[Action]")]
+        [HttpPost]
         public IActionResult Create(Chat model)
         {
             if (ModelState.IsValid)
@@ -65,8 +63,8 @@ namespace chat.Controllers
             return View();
         }
 
-
-        [HttpGet("{chatId}")]
+        //[HttpGet("{chatId}")]
+        [HttpGet]
         public IActionResult Open(string chatId)
         {
             var CurrentChat = AppDb.ChatsDatabase.Include("Messages")
@@ -81,36 +79,8 @@ namespace chat.Controllers
             return View(NewView);
         }
 
-        [HttpPost("[Action]")]
-        public IActionResult WriteMessage(string chatId, string messageText)
-        {
-            if (messageText == null)
-                return RedirectToAction("Open", "Chat", new { chatId = chatId });
-
-            var CurrentChat = AppDb.ChatsDatabase.Include("Messages")
-               .ToList().Find(e => e.ChatId == chatId);
-            if (ModelState.IsValid)
-            {
-                Message newmessage = new Message
-                {
-                    MessageText = messageText,
-                    SenderName = User.Identity.Name,
-                    ChatId = CurrentChat.ChatId,
-                };
-                AppDb.MessagesDatabase.Add(newmessage);
-                AppDb.SaveChanges();
-            }
-            ChatViewModel NewView = new ChatViewModel
-            {
-                ChatId = CurrentChat.ChatId,
-                ChatName = CurrentChat.ChatName,
-                Messages = CurrentChat.Messages
-            };
-            return RedirectToAction("Open", "Chat", new { chatId = chatId });
-        }
-
-
-        [HttpGet("[Action]/{chatId}")]
+        //[HttpGet("[Action]/{chatId}")]
+        [HttpGet]
         public IActionResult AddMemder(string chatId)
         {
             AddUserViewModel NewView = new AddUserViewModel
@@ -120,7 +90,8 @@ namespace chat.Controllers
             return View(NewView);
         }
 
-        [HttpPost("[Action]/{chatId}")]
+        //[HttpPost("[Action]/{chatId}")]
+        [HttpPost]
         public IActionResult AddMemder(AddUserViewModel model)
         {
             if (ModelState.IsValid)

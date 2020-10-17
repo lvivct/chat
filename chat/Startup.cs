@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-
+using chat.Hubs;
 
 namespace chat
 {
@@ -39,7 +39,7 @@ namespace chat
             services.AddControllersWithViews().AddXmlSerializerFormatters();
 
             services.AddRazorPages();
-
+            services.AddSignalR();
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>();
         }
@@ -67,6 +67,7 @@ namespace chat
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=MainMenu}/{action=Hello}/{id?}");
+                endpoints.MapHub<ChatHub>("/chathub");
             });
         }
     }
