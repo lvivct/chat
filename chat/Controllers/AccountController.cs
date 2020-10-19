@@ -78,7 +78,6 @@ namespace chat.Controllers
 
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
             }
-
             return View(model);
         }
     }

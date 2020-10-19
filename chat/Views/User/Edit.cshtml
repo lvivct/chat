@@ -1,0 +1,17 @@
+﻿@model chat.ViewModels.EditUserViewModel
+
+<form asp-controller="User" asp-action="Edit" style = "color:deeppink">
+    <div>
+        <label asp-for="UserName"></label>
+        <input value="@Model.UserName" asp-for="UserName" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="Email"></label>
+        <input value="@Model.Email" asp-for="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <button>confirm changes</button>
+</form>
+<a asp-action="ChangePassword" asp-controller="User">Change Password</a>
