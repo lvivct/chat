@@ -67,6 +67,8 @@ namespace chat
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=MainMenu}/{action=Hello}/{id?}");
+                endpoints.MapHub<NameChangeHub>("/NameChangeHub");
+
                 endpoints.MapHub<ChatHub>("/chathub");
             });
         }

@@ -19,6 +19,7 @@ namespace chat.Models
         [Required]
         public string MessageText { get; set; }
         public string SenderName { get; set; }
+        public string SenderId { get; set; }
         public DateTime When { get; set; }
         public Chat Chat { get; set; }
         public string ChatId { get; set; }

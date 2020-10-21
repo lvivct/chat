@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace chat.Migrations
 {
-    public partial class InitMigration : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -39,11 +39,25 @@ namespace chat.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Photopath = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ChatsDatabase",
+                columns: table => new
+                {
+                    ChatId = table.Column<string>(nullable: false),
+                    ChatName = table.Column<string>(nullable: false),
+                    PhotoPath = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatsDatabase", x => x.ChatId);
                 });
 
             migrationBuilder.CreateTable(
@@ -152,6 +166,53 @@ namespace chat.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ChatsUsersDatabase",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(nullable: false),
+                    ChatId = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatsUsersDatabase", x => new { x.ChatId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_ChatsUsersDatabase_ChatsDatabase_ChatId",
+                        column: x => x.ChatId,
+                        principalTable: "ChatsDatabase",
+                        principalColumn: "ChatId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ChatsUsersDatabase_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MessagesDatabase",
+                columns: table => new
+                {
+                    MessageId = table.Column<string>(nullable: false),
+                    MessageText = table.Column<string>(nullable: false),
+                    SenderName = table.Column<string>(nullable: true),
+                    SenderId = table.Column<string>(nullable: true),
+                    When = table.Column<DateTime>(nullable: false),
+                    ChatId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MessagesDatabase", x => x.MessageId);
+                    table.ForeignKey(
+                        name: "FK_MessagesDatabase_ChatsDatabase_ChatId",
+                        column: x => x.ChatId,
+                        principalTable: "ChatsDatabase",
+                        principalColumn: "ChatId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -190,6 +251,16 @@ namespace chat.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChatsUsersDatabase_UserId",
+                table: "ChatsUsersDatabase",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MessagesDatabase_ChatId",
+                table: "MessagesDatabase",
+                column: "ChatId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -210,10 +281,19 @@ namespace chat.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ChatsUsersDatabase");
+
+            migrationBuilder.DropTable(
+                name: "MessagesDatabase");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "ChatsDatabase");
         }
     }
 }

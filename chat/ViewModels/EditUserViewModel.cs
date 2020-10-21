@@ -10,6 +10,8 @@ namespace chat.ViewModels
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+        public string UserId { get; set; }
+
         public IFormFile Photo { get; set; }
     }
 }

@@ -26,29 +26,14 @@ namespace chat.Controllers
         public async Task<IActionResult> Edit()
         {
             var CurrentUser = await _userManager.GetUserAsync(HttpContext.User);
+
             EditUserViewModel model = new EditUserViewModel
             {
+                UserId = CurrentUser.Id,
                 UserName = CurrentUser.UserName,
                 Email = CurrentUser.Email
             };
             return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(EditUserViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var CurrentUser = await _userManager.GetUserAsync(HttpContext.User);
-                if (CurrentUser.Email != model.Email || CurrentUser.UserName != model.UserName)
-                { 
-                    CurrentUser.Email = model.Email;
-                    CurrentUser.UserName = model.UserName;
-                    await _userManager.UpdateAsync(CurrentUser);
-                }
-                await AppDb.SaveChangesAsync();
-            }
-            return RedirectToAction("Hello","MainMenu");
         }
 
         [HttpGet]

@@ -13,6 +13,7 @@
 
 <div>
     <input hidden value="@User.Identity.Name" id="userInput" />
+    <input hidden value="@Model.SenderId" id="userId" />
 
     <input id="chatId" asp-for="ChatId" value="@Model.ChatId" type="hidden" />
     <div class="form-group row">

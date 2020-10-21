@@ -11,11 +11,12 @@ namespace chat.Hubs
         {
             AppDb = appDb;
         }       
-        public async Task SendMessage(string user, string message, string chatId)
+        public async Task SendMessage(string user, string message, string chatId, string userId)
         {
             Message newmessage = new Message
             {
                 ChatId = chatId,
+                SenderId = userId,
                 SenderName = user,
                 MessageText = message
             };

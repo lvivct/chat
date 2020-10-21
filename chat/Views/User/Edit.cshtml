@@ -1,17 +1,28 @@
 ﻿@model chat.ViewModels.EditUserViewModel
 
-<form asp-controller="User" asp-action="Edit" style = "color:deeppink">
+<form asp-controller="User" asp-action="Edit" style="color:deeppink">
+
+    <input value="@Model.UserId" asp-for="UserId" id="userId" hidden />
+
     <div>
         <label asp-for="UserName"></label>
-        <input value="@Model.UserName" asp-for="UserName" />
+        <input value="@Model.UserName" asp-for="UserName" id="userName" />
         <span asp-validation-for="UserName" class="text-danger"></span>
     </div>
     <div>
         <label asp-for="Email"></label>
-        <input value="@Model.Email" asp-for="Email" />
+        <input value="@Model.Email" asp-for="Email" id="email" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
-
-    <button>confirm changes</button>
+    
+    <button id="changeButton" type="submit">confirm changes</button>
 </form>
-<a asp-action="ChangePassword" asp-controller="User">Change Password</a>
+<div>
+    <a asp-action="ChangePassword" asp-controller="User">Change Password</a>
+</div>
+<div>
+    <a asp-action="Hello" asp-controller="MainMenu">To Menu</a>
+</div>
+
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/UserNameChanged.js"></script>

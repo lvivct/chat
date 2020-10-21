@@ -268,6 +268,9 @@ namespace chat.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SenderId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SenderName")
                         .HasColumnType("nvarchar(max)");
 

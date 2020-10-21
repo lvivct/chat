@@ -69,10 +69,12 @@ namespace chat.Controllers
         {
             var CurrentChat = AppDb.ChatsDatabase.Include("Messages")
                 .ToList().Find(e => e.ChatId == chatId);
+            var CurrentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             ChatViewModel NewView = new ChatViewModel
             {
                 ChatId = CurrentChat.ChatId,
+                SenderId = CurrentUserId,
                 ChatName = CurrentChat.ChatName,
                 Messages = CurrentChat.Messages
             };

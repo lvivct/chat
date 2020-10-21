@@ -22,8 +22,9 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     var user = document.getElementById("userInput").value;
     var message = document.getElementById("messageInput").value;
     var chatId = document.getElementById("chatId").value;
+    var userId = document.getElementById("userId").value;
 
-    connection.invoke("SendMessage", user, message, chatId).catch(function (err) {
+    connection.invoke("SendMessage", user, message, chatId, userId).catch(function (err) {
         return console.error(err.toString());
     });
     event.preventDefault();
