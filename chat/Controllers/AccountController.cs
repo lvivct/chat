@@ -1,15 +1,14 @@
 ﻿using chat.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using System.Threading.Tasks;
 
 namespace chat.Controllers
 {
-
     public class AccountController : Controller
     {
         private readonly UserManager<AppUser> userManager; 
-
         private readonly SignInManager<AppUser> signInManager;
 
         public AccountController(UserManager<AppUser> userManager,
@@ -19,7 +18,12 @@ namespace chat.Controllers
             this.signInManager = signInManager;
         }
 
-        [HttpPost]
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [HttpPost("[Action]")]
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();

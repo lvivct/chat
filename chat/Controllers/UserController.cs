@@ -35,13 +35,11 @@ namespace chat.Controllers
             };
             return View(model);
         }
-
         [HttpGet]
         public IActionResult ChangePassword()
         {
             return View();
         }
-
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {

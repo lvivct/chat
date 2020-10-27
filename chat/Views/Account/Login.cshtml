@@ -1,4 +1,6 @@
 ﻿@model chat.Models.LoginViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers.Localization
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 
 @{
     ViewData["Title"] = "User Login";
@@ -8,15 +10,18 @@
     <div class="row">
         <div class="col-sm">
             <div class="maintitle text-light">
-                <b>Welcome to the</b> <t class="markertext">C-Chat</t>!
+                <b>
+                    @Localizer["String2"]
+                </b>
+                <t class="markertext">C-Chat</t>!
             </div>
             <br>
             <t class="secondtitle text-light">
-                Not a member now?
+                @Localizer["String1"]
                 <t>
                     <a asp-controller="account" asp-action="Register"
                        class="nav-link" style="color:deeppink">
-                        Sign Up
+                        @Localizer["Register"]
                     </a>
                 </t>
             </t>
@@ -27,34 +32,34 @@
                 <form method="post">
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="row justify-content-center">
-                        <label class="text-light" asp-for="UserName"></label>
+                        <label class="text-light">@Localizer["UserName"]</label>
                     </div>
                     <div class="row justify-content-center">
                         <input class="concavecard text-white" asp-for="UserName" />
                         <span asp-validation-for="UserName" class="text-danger"></span>
                     </div>
                     <div class="row justify-content-center">
-                        <label class="text-light" asp-for="Password"></label>
+                        <label class="text-light">@Localizer["Password"]</label>
                     </div>
                     <div class="row justify-content-center">
                         <input id="passwordTextBox" class="concavecard text-white" asp-for="Password" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                         <label class="text-white">
-                            show password
+                            @Localizer["ShowPassword"]
                             <input type="checkbox" onclick='toggleShowPassword()' />
                         </label>
                     </div>
                     <div class="form-group">
                         <div class="custom-checkbox text-white">
-                            <label asp-for="RememberMe">
-                                <input asp-for="RememberMe" />
+                            <label>
+                                @Localizer["RememberMe"] @*трабл*@
                                 @Html.DisplayNameFor(m => m.RememberMe)
                             </label>
                         </div>
                     </div>
 
                     <div class="row justify-content-center">
-                        <button class="loginbutton text-light" id="login">Login</button>
+                        <button class="loginbutton text-light" id="login">@Localizer["Login"]</button>
                     </div>
                 </form>
             </div>
