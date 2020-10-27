@@ -25,7 +25,8 @@ namespace chat.Models
             modelBuilder.Entity<Message>()
                 .HasOne(p => p.Chat)
                 .WithMany(b => b.Messages)
-                .HasForeignKey(b => b.ChatId);
+                .HasForeignKey(b => b.ChatId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
         public DbSet<Message> MessagesDatabase { get; set; }
         public DbSet<Chat> ChatsDatabase { get; set; }

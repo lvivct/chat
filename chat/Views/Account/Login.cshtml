@@ -51,9 +51,11 @@
                     </div>
                     <div class="form-group">
                         <div class="custom-checkbox text-white">
-                            <label>
-                                @Localizer["RememberMe"] @*трабл*@
-                                @Html.DisplayNameFor(m => m.RememberMe)
+                            <label asp-for="RememberMe">
+                                <input asp-for="RememberMe" />
+                                <label>
+                                    @Localizer["RememberMe"]
+                                </label>
                             </label>
                         </div>
                     </div>
