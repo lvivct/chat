@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using chat.Models;
 
 namespace chat.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201029205654_AddedRoles")]
+    partial class AddedRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -226,27 +228,14 @@ namespace chat.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("AddUsers")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("EditChat")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("GiveRoles")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("KickUsers")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RoleName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("UserRoleRoleId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ChatId", "UserId");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("UserRoleRoleId");
 
                     b.ToTable("ChatsUsersDatabase");
                 });
@@ -296,6 +285,32 @@ namespace chat.Migrations
                     b.HasIndex("ChatId");
 
                     b.ToTable("MessagesDatabase");
+                });
+
+            modelBuilder.Entity("chat.Models.Role", b =>
+                {
+                    b.Property<string>("RoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("AddUsers")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("EditChat")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("GiveRoles")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("KickUsers")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RoleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RoleId");
+
+                    b.ToTable("Role");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -362,6 +377,10 @@ namespace chat.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("chat.Models.Role", "UserRole")
+                        .WithMany()
+                        .HasForeignKey("UserRoleRoleId");
                 });
 
             modelBuilder.Entity("chat.Models.Message", b =>

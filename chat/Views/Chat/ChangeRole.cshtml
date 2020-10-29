@@ -1,0 +1,40 @@
+﻿@model AppUserChat
+
+    <form method="post" asp-action="ChangeRole"
+          asp-route-UserId="@Model.UserId" asp-route-ChatId="@Model.ChatId">
+
+        <div>
+            <label asp-for="RoleName"></label>
+            <input asp-for="RoleName" />
+        </div>
+
+        <div>
+            <label class="text-white">
+                GiveRoles
+                <input type="checkbox" value="@Model.GiveRoles" asp-for="GiveRoles" />
+            </label>
+        </div>
+
+        <div>
+            <label class="text-white">
+                KickUsers
+                <input type="checkbox" asp-for="KickUsers" />
+            </label>
+        </div>
+
+        <div>
+            <label class="text-white">
+                EditChat
+                <input type="checkbox" asp-for="EditChat" />
+            </label>
+        </div>
+
+        <div>
+            <label class="text-white">
+                AddUsers
+                <input type="checkbox" asp-for="AddUsers" />
+            </label>
+        </div>
+        <button type="submit">Confirm</button>
+    </form>
+}

@@ -1,7 +1,10 @@
 ﻿@model chat.ViewModels.AddUserViewModel
 
+
+@if (Model.AddUsers)
+{
 <form asp-controller="Chat" asp-action="AddMemder" 
-      asp-route-ChatId="@Model.ChatId">
+      asp-route-ChatId="@Model.ChatId" asp-route-AddUsers="@Model.AddUsers">
 
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group row">
@@ -16,5 +19,9 @@
             <button class="btn btn-primary">Send</button>
         </div>
     </div>
-
 </form>
+} 
+else
+{
+<label>You don't have access to this</label>
+}

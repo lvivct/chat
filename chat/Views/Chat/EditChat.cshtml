@@ -1,0 +1,42 @@
+﻿@model chat.ViewModels.ChatEditViewModel
+
+<div class="text-light">
+    @for (int i = 0; i < Model.UserNameList.Count; ++i)
+    {
+    <div>
+        <label>@Model.UserNameList[i]</label>
+        @if (Model.KickUsers)
+        {
+            <form method="post" asp-action="KickUser"
+                  asp-route-userId="@Model.UserIdList[i]"
+                  asp-route-chatId="@Model.ChatId">
+                <button>Kick</button>
+            </form>
+        }
+        @if (Model.GiveRoles)
+        { 
+                <a asp-action="ChangeRole" asp-route-userId="@Model.UserIdList[i]"
+                  asp-route-chatId="@Model.ChatId">ChangeRole</a>
+        }
+    </div>
+    }
+
+    @if (Model.EditChat)
+    {
+        <form method="post" asp-action="EditChat" asp-route-chatId="@Model.ChatId">
+            <div>
+                <label asp-for="ChatName"></label>
+                <input value="@Model.ChatName" asp-for="ChatName" />
+                <span asp-validation-for="ChatName" class="text-danger"></span>
+            </div>
+            <button>Save changes</button>
+        </form>
+
+
+        <form method="post" asp-action="DeleteChat" asp-route-chatId="@Model.ChatId">
+            <button>
+                delete chat
+            </button>
+        </form>
+    }
+</div>

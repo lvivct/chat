@@ -1,4 +1,5 @@
-﻿using System;
+﻿using chat.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,5 +10,6 @@ namespace chat.ViewModels
     {
         public  string ChatId { get; set; }
         public string UserName { get; set; }
+        public bool AddUsers { get; set; }
     }
 }

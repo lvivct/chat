@@ -30,8 +30,14 @@
     </div>
 </div>
 
-<a asp-action="AllChats" asp-controller="Chat">Back</a>
-<a asp-action="AddMemder" asp-controller="Chat" asp-route-chatId="@Model.ChatId">Add</a>
+<div><a asp-action="AllChats" asp-controller="Chat">Back</a></div>
+
+<div><a asp-action="AddMemder" asp-controller="Chat" asp-route-chatId="@Model.ChatId">Add</a></div>
+
+<div><a asp-action="EditChat" asp-controller="Chat" asp-route-chatId="@Model.ChatId">EditChat</a></div>
+<form method="post" asp-route-chatId="@Model.ChatId" asp-action="Leave">
+    <div><button>LeveChat</button></div>
+</form>
 
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/chat.js"></script>
