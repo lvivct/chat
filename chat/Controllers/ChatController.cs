@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using chat.Models;
 using chat.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.Extensions.Logging;
 
 namespace chat.Controllers
 {
@@ -18,8 +18,11 @@ namespace chat.Controllers
     public class ChatController : Controller
     {
         private readonly AppDbContext AppDb;
-        public ChatController(AppDbContext appDb)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public ChatController(AppDbContext appDb,IWebHostEnvironment webHostEnvironment)
         {
+            _webHostEnvironment = webHostEnvironment;
             AppDb = appDb;
         }
 
@@ -180,6 +183,7 @@ namespace chat.Controllers
             {
                 ChatId = chatId,
                 ChatName = thisChat.ChatName,
+                PhotoPath = thisChat.PhotoPath,
                 UserNameList = allUsersNames,
                 UserIdList = allUsersIds,
                 EditChat = CurrentUserChat.EditChat,
@@ -190,13 +194,24 @@ namespace chat.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> EditChat(string chatId, string chatName)
+        public async Task<IActionResult> EditChat(ChatEditViewModel model)
         {
-            var thisChat = AppDb.ChatsDatabase.ToList().Find(e => e.ChatId == chatId);
-            thisChat.ChatName = chatName;
-            await AppDb.SaveChangesAsync();
+            
 
-            return RedirectToAction("Open", new { chatId });
+            var thisChat = AppDb.ChatsDatabase.ToList().Find(e => e.ChatId == model.ChatId);
+            thisChat.ChatName = model.ChatName;
+
+            if (model.Photo != null)
+            {
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                model.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                thisChat.PhotoPath = uniqueFileName;
+            }
+
+            await AppDb.SaveChangesAsync();
+            return RedirectToAction("Open", new { model.ChatId });
         }
 
         [HttpPost]
@@ -233,7 +248,6 @@ namespace chat.Controllers
             await AppDb.SaveChangesAsync();
             return RedirectToAction("EditChat", new { model.ChatId });
         }
-
         
         [HttpPost]
         public async Task<IActionResult> DeleteChat(string chatId)

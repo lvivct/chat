@@ -12,5 +12,6 @@ namespace chat.ViewModels
         public string Email { get; set; }
         public string UserId { get; set; }
         public IFormFile Photo { get; set; }
+        public string PhotoPath { get; set; }
     }
 }

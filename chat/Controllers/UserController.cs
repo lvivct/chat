@@ -1,12 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using chat.Models;
 using chat.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
-
 using Microsoft.EntityFrameworkCore;
 
 namespace chat.Controllers
@@ -16,14 +17,16 @@ namespace chat.Controllers
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly AppDbContext AppDb;
 
-        public UserController(AppDbContext appDb,
+        public UserController(AppDbContext appDb, IWebHostEnvironment webHostEnvironment,
             SignInManager<AppUser> signInManager, UserManager<AppUser> userManager )
         {
+            AppDb = appDb;
+            _webHostEnvironment = webHostEnvironment;
             _signInManager = signInManager;
             _userManager = userManager;
-            AppDb = appDb;
         }
 
         [HttpGet]
@@ -33,12 +36,45 @@ namespace chat.Controllers
 
             EditUserViewModel model = new EditUserViewModel
             {
+                PhotoPath = CurrentUser.Photopath,
                 UserId = CurrentUser.Id,
                 UserName = CurrentUser.UserName,
                 Email = CurrentUser.Email
             };
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditUserViewModel model)
+        {
+            var CurrentUser = AppDb.Find<AppUser>(model.UserId);
+            if (CurrentUser.Email != model.Email || CurrentUser.UserName != model.UserName || model.Photo != null)
+            {
+                if (model.Photo != null)
+                {
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    model.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                    CurrentUser.Photopath = uniqueFileName;
+                }
+                if (CurrentUser.Email != model.Email)
+                    CurrentUser.Email = model.Email;
+                if (CurrentUser.UserName != model.UserName)
+                {
+                    CurrentUser.UserName = model.UserName;
+
+                    var messages = AppDb.MessagesDatabase;
+                    foreach (var message in messages)
+                        if (message.SenderId == model.UserId)
+                            message.SenderName = model.UserName;
+                }
+                await _userManager.UpdateAsync(CurrentUser);
+                await AppDb.SaveChangesAsync();
+            }
+            return RedirectToAction();
+        }
+
         [HttpGet]
         public IActionResult ChangePassword()
         {

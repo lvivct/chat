@@ -1,4 +1,5 @@
 ﻿using chat.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,6 +17,8 @@ namespace chat.ViewModels
         public string ForPhoto { get; set; }
         public List<string> UserNameList { get; set; }
         public List<string> UserIdList { get; set; }
+        public IFormFile Photo { get; set; }
+        public string PhotoPath { get; set; }
         public bool EditChat { get; set; }
         public bool KickUsers { get; set; }
         public bool GiveRoles { get; set; }
