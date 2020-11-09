@@ -27,6 +27,8 @@ namespace chat.Controllers
         }
 
         //[Route("[Action]")]
+
+        [HttpGet]
         public IActionResult AllChats()
         {
             var CurrentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -36,25 +38,47 @@ namespace chat.Controllers
 
             var CurrentUser = AllUsers.ToList().Find(e => e.Id == CurrentUserId);
             var Chats = CurrentUser.AppUsersChats.ToList();
-            return View(Chats);
+
+            var model = new AllChatsViewModel
+            {
+                ChatList = Chats
+            };
+            return View(model);
         }
 
-
-        //[HttpGet("[Action]")]
-        [HttpGet]
-        public IActionResult Create()
+        [HttpPost]
+        public IActionResult AllChats(string chatId)
         {
-            return View();
+            var CurrentChat = AppDb.ChatsDatabase.Include("Messages")
+               .ToList().Find(e => e.ChatId == chatId);
+            var CurrentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var AllUsers = AppDb.Users                                              // temp_here
+                        .Include(x => x.AppUsersChats)
+                        .ThenInclude(x => x.Chat);
+            var CurrentUser = AllUsers.ToList().Find(e => e.Id == CurrentUserId);
+            var Chats = CurrentUser.AppUsersChats.ToList();                         //
+
+            var model = new AllChatsViewModel
+            {
+                MessageList = CurrentChat.Messages.ToList(),
+                CurrentChatId = CurrentChat.ChatId,
+                CurrentUserId = CurrentUserId,
+                ChatList = Chats                                                    //
+            };
+
+            return View(model);
         }
+
         //[HttpPost("[Action]")]
         [HttpPost]
-        public IActionResult Create(Chat model)
+        public IActionResult Create(string chatName)
         {
             if (ModelState.IsValid)
             {
                 Chat newchat = new Chat
                 {
-                    ChatName = model.ChatName,
+                    ChatName = chatName
                 };
                 AppDb.ChatsDatabase.Add(newchat);
                 AppDb.SaveChanges();
@@ -69,24 +93,6 @@ namespace chat.Controllers
                 return RedirectToAction("AllChats", "Chat");
             }
             return View();
-        }
-
-        //[HttpGet("{chatId}")]
-        [HttpGet]
-        public IActionResult Open(string chatId)
-        {
-            var CurrentChat = AppDb.ChatsDatabase.Include("Messages")
-                .ToList().Find(e => e.ChatId == chatId);
-            var CurrentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            ChatViewModel NewView = new ChatViewModel
-            {
-                ChatId = CurrentChat.ChatId,
-                SenderId = CurrentUserId,
-                ChatName = CurrentChat.ChatName,
-                Messages = CurrentChat.Messages
-            };
-            return View(NewView);
         }
 
         //[HttpGet("[Action]/{chatId}")]
@@ -196,8 +202,6 @@ namespace chat.Controllers
         [HttpPost]
         public async Task<IActionResult> EditChat(ChatEditViewModel model)
         {
-            
-
             var thisChat = AppDb.ChatsDatabase.ToList().Find(e => e.ChatId == model.ChatId);
             thisChat.ChatName = model.ChatName;
 

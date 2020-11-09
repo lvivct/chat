@@ -9,6 +9,10 @@ namespace chat.ViewModels
     public class AllChatsViewModel
     {
         public List<AppUserChat> ChatList { get; set; }
+        public List<Message> MessageList { get; set; }
         public string ChatName { get; set; }
+        public string CurrentUserId { get; set; }
+        public string CurrentChatId { get; set; }
+        public string NewMessageText { get; set; }
     }
 }
