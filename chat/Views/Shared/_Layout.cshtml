@@ -8,13 +8,15 @@
     <title>@ViewData["Title"] - chat</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="https://kit.fontawesome.com/5da3db78a1.js" crossorigin="anonymous"></script>
+
 </head>
 <body class="back">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm cardflat">
             <div class="container">
                 <div class="logo cardconvex">C</div>
-               
+
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                         data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -22,29 +24,34 @@
                     <span class="navbar-toggler-icon"></span>
 
                 </button>
-                
+
                 @if (signInManager.IsSignedIn(User))
                 {
-                    <form method="post" asp-action="logout" asp-controller="account">
-                        <button type="submit">
-                            Logout @User.Identity.Name
+                <div class="navbar d-sm-inline-flex">
+                    <div class="flex-column"><i class="profile fas fa-user-circle"></i></div>
+                    <div class="flex-column navbar-brand" style="color:#a6a6a6">@User.Identity.Name</div>
+                    <form class="flex-column" method="post" asp-action="logout" asp-controller="account">
+                        <button class="nav-link text-light headerbutton cardconvex">
+                            Log out
                         </button>
                     </form>
+                </div>
+                   
                 }
                 else
                 {
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-light headerbutton cardconvex"
-                               asp-action="login" asp-controller="account">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light headerbutton cardconvex"
-                               asp-action="register" asp-controller="account">Sign up</a>
-                        </li>
-                    </ul>
-                </div>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-light headerbutton cardconvex"
+                                   asp-action="login" asp-controller="account">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light headerbutton cardconvex"
+                                   asp-action="register" asp-controller="account">Sign up</a>
+                            </li>
+                        </ul>
+                    </div>
                 }
 
             </div>
@@ -65,7 +72,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
+   
     @RenderSection("Scripts", required: false)
 </body>
 </html>

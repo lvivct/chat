@@ -10,6 +10,13 @@ a.navbar-brand {
 /* Provide sufficient contrast against white background */
 .back {
     background: #1c262c;
+   
+}
+body{
+    min-height:100%;
+}
+.container-fluid{
+    margin-bottom:60px;
 }
 
 
@@ -20,9 +27,14 @@ a.navbar-brand {
     box-shadow: 20px 20px 31px #141b20, -20px -20px 31px #243138;
 }
 .cardflat {
-    border-radius: 2px;
+    border-radius: 15px;
     background: #1c262c;
-    box-shadow: 20px 20px 31px #182025, -20px -20px 31px #202c33;
+    box-shadow: 5px 5px 10px #192127, -5px -5px 10px #1f2b31;
+}
+.cardpressed {
+    border-radius: 15px;
+    background: #1c262c;
+    box-shadow: inset 5px 5px 10px #171f24, inset -5px -5px 10px #212d34;
 }
 .btn-primary {
     border-radius: 50px;
@@ -34,20 +46,47 @@ a.navbar-brand {
     background: linear-gradient(145deg, #192228, #1e292f);
     box-shadow: 20px 20px 31px #141b20, -20px -20px 31px #243138;
 }
+.chatcard {
+    border-radius: 15px;
+    background: #1c262c;
+    box-shadow: 5px 5px 10px #192127, -5px -5px 10px #1f2b31;
+}
 input {
     width: 50%;
     padding: 12px 20px;
     margin: 8px 0;
-    border: none;
+    border: none;    
 }
-input:focus {
+input:focus  {
     border: none;
     outline: none;
+    background-color:none;
 }
-/*Main titles design*/
-.maintitlecont{
-    padding:10%;
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    textarea:-webkit-autofill,
+    textarea:-webkit-autofill:hover,
+    textarea:-webkit-autofill:focus,
+    select:-webkit-autofill,
+    select:-webkit-autofill:hover,
+    select:-webkit-autofill:focus {
+        -webkit-text-fill-color: floralwhite;
+        -webkit-box-shadow: 20px 20px 31px #141b20, -20px -20px 31px #243138;
+        transition: background-color 5000s ease-in-out 0s;
+    }
+.wpv-filter-form .form-control:focus {
+    border-radius: 0;
+    box-shadow: none;
+    -webkit-box-shadow: none;
 }
+.wpv-filter-form .form-control {
+    border-radius: 0;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
 .maintitle {
     font-size: 80px;  
 }
@@ -58,8 +97,14 @@ input:focus {
 .markertext {
     color: aqua;
 }
+.ordinary-text {
+    color:#a6a6a6;
+    font-size:24px;
+}
+.ordinary-text-color {
+    color: #a6a6a6;
+}
 .secondmarkertext {
-   
     text-decoration-style:solid;
     text-align:right;
 }
@@ -96,6 +141,7 @@ button:focus {
     width: 150px;
     height: 40px;
     border-radius: 20px;
+    margin-top: 24px;
     background: linear-gradient(145deg, #ff159d, #e61284);
     box-shadow: 20px 20px 31px #b80e6a, -20px -20px 31px #ff1abc05;
 }
@@ -103,9 +149,84 @@ button:focus {
     width: 150px;
     height: 40px;
     border-radius: 20px;
+    margin-top:24px;
     background: linear-gradient(145deg, #00ffff, #00e6e6);
     box-shadow: 10px 10px 20px #00d1d1, -10px -10px 20px #00ffff05;
 }
+/*neomorphic check box*/
+.check-button {
+    display: inline-flex;
+    border-radius: 5px;
+}
+
+    .check-button .toggle {
+        height: 24px;
+        width: 48px;
+    }
+
+.toggle input {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    outline: none;
+    -webkit-appearance: none;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: -8px -4px 8px 0px rgba(255,255,255,0.05), 8px 4px 12px 0px rgba(0,0,0,0.5), inset -4px -4px 4px 0px rgba(255,255,255,0.05), inset 4px 4px 4px 0px rgba(0,0,0,0.5);
+}
+
+input:before {
+    position: absolute;
+    content: '';
+    left: 0;
+    top: 0;
+    height: 24px;
+    width: 24px;
+    background: #1c262c;
+    border-radius: 50%;
+    /* transform: scale(1.1); */
+    box-shadow: 20px 20px 31px #141b20, -20px -20px 31px #243138;
+    transition: left 0.4s cubic-bezier(0.85,0.05,0.18,1.35);
+}
+
+input:checked:before {
+    left: 24px;
+    box-shadow: -8px -4px 8px 0px rgba(255,255,255,0.05);
+}
+
+.text:before {
+    content: 'Remember me';
+    float: right;
+    width: 112px;
+    color: #a6a6a6;
+    margin-left: 20px;
+    margin-top: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+
+.text.check:before {
+    content: 'Remember me';
+    color: #7aebeb;
+    text-shadow: 0px 0px 8px #00cec9;
+}
+
+
+
+.custom-checkbox {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+.custom-checkbox + label {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+}
+
+   
+
 /*logo design*/
 .logo {
     width:50px;
@@ -114,6 +235,17 @@ button:focus {
     text-align:center;
     color:aqua;
     margin-right:24px;
+}
+.profile {
+    width: 50px;
+    height: 50px;
+    font-size: 32px;
+    margin-right: 24px;
+    text-align:center;
+    padding-top: 9px;
+    color: lightgray;
+    border-radius: 30px;
+    box-shadow: -8px -4px 8px 0px rgba(255,255,255,0.05), 8px 4px 12px 0px rgba(0,0,0,0.5), inset -4px -4px 4px 0px rgba(255,255,255,0.05), inset 4px 4px 4px 0px rgba(0,0,0,0.5);
 }
 /* Sticky footer styles
 -------------------------------------------------- */
@@ -146,10 +278,112 @@ html {
   position: relative;
   min-height: 100%;
 }
+/*chats design*/
+.chats-header{
+    font-size:32px;
+    color:deeppink;
+    margin:16px;
+}
+.chatscontainer {
+    margin-top: 0;
+    margin-left: 0;
+    height: 100%;
+}
+.list-group {
+    display: inline-block;
+}
 
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+.chat-item {
+    margin: 24px;
+    padding: 16px;
+    padding-bottom:13px;
+}
+.hide-more-text {
+    display: inline-block;
+    width: 50%;
+    white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+.search{
+    width:inherit;
+    margin:24px;
+}
+.search-button{
+    width:36px;
+    height:36px;
+    background-color:deeppink;
+    border-radius:36px;
+
+}
+
+
+.list-unstyled {
+    height: 70vh;
+    margin-bottom: 10px;
+    overflow: scroll;
+    overflow-x: hidden;
+    padding: 0;
+    margin: 0;
+    -webkit-overflow-scrolling: touch;
+}
+    .list-unstyled::-webkit-scrollbar {
+        width: 10px;
+    }
+    .list-unstyled::-webkit-scrollbar-track {
+        border-radius: 15px;
+        background: #1c262c;
+        box-shadow: inset 5px 5px 10px #171f24, inset -5px -5px 10px #212d34;
+    }
+
+    .list-unstyled::-webkit-scrollbar-thumb {
+        background: #00ffff;
+        border-radius: 10px;
+    }
+
+    /*floating action button*/
+.float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 90px;
+    background: linear-gradient(145deg, #ff159d, #e61284);
+    /*box-shadow: 20px 20px 31px #b80e6a, -20px -20px 31px #ff1abc05;*/
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+}
+.float:hover {
+    color: #a6a6a6;
+}
+
+.my-float {
+    margin-top: 22px;
+}
+/*dialog-styles*/
+.create-button{
+    border-radius:15px;
+    background-color:deeppink;
+}
+
+.no-border {
+    border: 0;
+    box-shadow: none; 
+}
+.aqua-border-bottom {
+    
+    border-bottom: 1px solid #00FFFF;
+  
+}
+.modal-footer {
+    border-top: 1px solid #00FFFF;
+}
+
+y {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    height: 100%;
 }
 .footer {
   position: absolute;

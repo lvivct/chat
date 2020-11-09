@@ -16,5 +16,11 @@ namespace chat.Models
         public string UserId { get; set; }
         public Chat Chat { get; set; }
         public string ChatId { get; set; }
+
+       
+        public string ChatName { get; set; }
+        public string PhotoPath { get; set; }
+        public ICollection<AppUserChat> AppUsersChats { get; set; }
+        public ICollection<Message> Messages { get; set; }
     }
 }

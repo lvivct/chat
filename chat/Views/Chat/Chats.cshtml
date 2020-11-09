@@ -1,11 +1,77 @@
 ﻿@model ICollection<AppUserChat>
+   
+        <div class="container-fluid ">
+            <div class="row d-flex justify-content-start ">
+                <div class="col-md-4 order-md-1">
+        
+                    <form class="example" action="action_page.php">
+                        <input class="cardpressed search text-white" type="text" placeholder="Search chat.." name="search">
+                        <button class="search-button" type="submit"><i class="text-white fa fa-search"></i></button>
+                    </form>
+                    <ul class="list-unstyled">
+                        @for (int i = 0; i < 10; i++)
+                        {
+                            <li class="list-group-flush flex-column align-items-start chatcard chat-item text-light">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <div class="logo text-white"><i class="fa fa-snapchat"></i></div>
+                                    <div class="w-100">
+                                        <div class="d-flex w-75 justify-content-between">
+                                            <h5 class="mb-1">Chat @i</h5>
+                                            <small>3 days ago</small>
+                                        </div>
+                                        <div class="d-flex w-100 justify-content-start">
+                                            <p class="mb-1 markertext">Kostya: </p>
+                                            <div class="ordinary-text-color hide-more-text text-sm-left"> Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit</div>
+                                        </div>
+                                    </div>
+                                </div>
 
-@foreach (var chat in Model)
-{
-    <a href="@Url.ActionLink("Open", "Chat", new { chatId = chat.ChatId })"
-       class="btn btn-primary m-1">@chat.Chat.ChatName</a>
-}
-<a asp-controller="Chat" asp-action="Create"
-   class="nav-link" style="color:deeppink">
-    Create Chat
-</a>
+                            </li>
+                        }
+                        </ul>
+                    <a data-toggle="modal" data-target="#exampleModal" data-whatever="" asp-controller="Chat" asp-action="Create" class="col-md-4 float">
+                        <i class="fa fa-plus my-float"></i>
+                    </a>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content back">
+                                <div class="modal-header border-bottom-0">
+                                    <h5 class="modal-title markertext" id="exampleModalLabel">New Chat!</h5>
+                                    <button type="button" class=" close text-light" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                          
+                                            <input type="text" class="w-100 concavecard text-white" id="chat-name" placeholder="Enter chatname..">
+                                        </div>
+
+                                    </form>
+                                </div>
+                                <div class="modal-footer border-top-0 ">
+                                    <button type="button" class="cardflat headerbutton text-light" data-dismiss="modal">Close</button>
+                                    <button type="button" class="create-button headerbutton text-light" >Create</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-8 order-md-2">
+                    //тут можна виводити повідомлення
+                    @foreach (var chat in Model)
+                    {
+                        <a href="@Url.ActionLink("Open", "Chat", new { chatId = chat.ChatId })"
+                           class="btn btn-primary m-1">@chat.Chat.ChatName</a>
+                    }
+                    <a asp-controller="Chat" asp-action="Create"
+                       class="nav-link" style="color:deeppink">
+                        Create Chat
+                    </a>
+                </div>
+            </div>
+        </div>
+ 
+           
