@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,5 +17,8 @@ namespace chat.Models
         public ICollection<AppUserChat> AppUsersChats { get; set; }
         public ICollection<Message> Messages { get; set; }
 
+        public string LastMessageText { get; set; } // temp here
+        public string LastMessageSender { get; set; }
+        public DateTime LastMessageWhen { get; set; } //
     }
 }

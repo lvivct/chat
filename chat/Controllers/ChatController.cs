@@ -51,6 +51,7 @@ namespace chat.Controllers
         {
             var CurrentChat = AppDb.ChatsDatabase.Include("Messages")
                .ToList().Find(e => e.ChatId == chatId);
+
             var CurrentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             var AllUsers = AppDb.Users                                              // temp_here
@@ -71,6 +72,7 @@ namespace chat.Controllers
         }
 
         //[HttpPost("[Action]")]
+
         [HttpPost]
         public IActionResult Create(string chatName)
         {
