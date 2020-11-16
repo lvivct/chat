@@ -1,10 +1,15 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+
+
+.dropdown-toggle {
+    background-color: transparent;
+    border-color: #fff;
+    border-style: solid;
+    border-top: none;
+    border-right: none;
+    border-left: none;
 }
 
 /* Provide sufficient contrast against white background */
@@ -51,8 +56,20 @@ body{
     background: #1c262c;
     box-shadow: 5px 5px 10px #192127, -5px -5px 10px #1f2b31;
 }
+
+.field-icon {
+    float: right;
+    margin-right: -30%;
+    margin-top:24px;
+    position: absolute;
+    z-index: 2;
+    cursor:pointer;
+}
+
+
 input {
-    width: 50%;
+   
+    width: inherit;
     padding: 12px 20px;
     margin: 8px 0;
     border: none;    

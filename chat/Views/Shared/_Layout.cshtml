@@ -1,5 +1,4 @@
 ﻿@inject SignInManager<AppUser> signInManager;
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,9 +7,11 @@
     <title>@ViewData["Title"] - chat</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <script type="text/javascript" src="/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/5da3db78a1.js" crossorigin="anonymous"></script>
 
 </head>
+
 <body class="back">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm cardflat">
@@ -25,16 +26,7 @@
 
                 </button>
 
-                @{
-                    var routeValues = this.ViewContext.RouteData.Values;
-                    var controller = routeValues["controller"] as string;
-                    var action = routeValues["action"] as string;
-                }
-                <ul>
-                    <li>@Html.ActionLink("Ukrane", @action, @controller, new { culture = "uk-ua" }, new { rel = "alternate", hreflang = "ua" })</li>
-                    <li>@Html.ActionLink("English", @action, @controller, new { culture = "en-us" }, new { rel = "alternate", hreflang = "en" })</li>
-                    <li>@Html.ActionLink("Deutsche", @action, @controller, new { culture = "de-de" }, new { rel = "alternate", hreflang = "de" })</li>
-                </ul>
+
 
                 @if (signInManager.IsSignedIn(User))
                 {
@@ -65,7 +57,21 @@
                         </ul>
                     </div>
                 }
-
+                @{
+                    var routeValues = this.ViewContext.RouteData.Values;
+                    var controller = routeValues["controller"] as string;
+                    var action = routeValues["action"] as string;
+                }
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle markertext" data-toggle="dropdown" role="button" aria-expanded="false">Сhoose language <span class="caret"></span></a>
+                        <ul class="dropdown-menu back  " role="menu">
+                            <li class="dropdown-item-text">@Html.ActionLink("Ukrane", @action, @controller, new { culture = "uk-ua" }, new { rel = "alternate", hreflang = "ua" })</li>
+                            <li class="dropdown-item-text">@Html.ActionLink("English", @action, @controller, new { culture = "en-us" }, new { rel = "alternate", hreflang = "en" })</li>
+                            <li class="dropdown-item-text">@Html.ActionLink("Deutsche", @action, @controller, new { culture = "de-de" }, new { rel = "alternate", hreflang = "de" })</li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </nav>
     </header>
@@ -84,7 +90,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-   
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

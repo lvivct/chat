@@ -42,12 +42,16 @@
                         <label class="text-light">@Localizer["Password"]</label>
                     </div>
                     <div class="row justify-content-center">
-                        <input id="passwordTextBox" class="concavecard text-white" asp-for="Password" />
+
+                        <input id="passwordTextBox" class="concavecard text-white" style="" asp-for="Password" />
+
+                        <i id="show_hide_bt" onclick='toggleShowPassword()' toggle="#passwordTextBox" class="ordinary-text-color fa fa-fw fa-eye field-icon .toggle-password"></i>
                         <span asp-validation-for="Password" class="text-danger"></span>
-                        <label class="text-white">
-                            @Localizer["ShowPassword"]
-                            <input type="checkbox" onclick='toggleShowPassword()' />
-                        </label>
+                        <script>
+                            $("#show_hide_bt").click(function (event) {
+                                $(this).find('i').toggleClass('fa-eye-slash');
+                            });
+                        </script>
                     </div>
                     <div class="row justify-content-center">
                         <div class="check-button">
