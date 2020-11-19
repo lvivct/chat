@@ -21,6 +21,9 @@ connection.on("ReceiveMessageToChat", function (user, message, when, chatId) {
 });
 
 connection.start().then(function () {
+    var chatId = document.getElementById("chatId").value;
+    connection.invoke("AddToGroupAsync", chatId);
+
     document.getElementById("sendButton").disabled = false;
 }).catch(function (err) {
     return console.error(err.toString());

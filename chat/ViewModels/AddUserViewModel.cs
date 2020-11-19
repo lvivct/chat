@@ -10,6 +10,6 @@ namespace chat.ViewModels
     {
         public  string ChatId { get; set; }
         public string UserName { get; set; }
-        public bool AddUsers { get; set; }
+        public bool AddUsersToChat { get; set; }
     }
 }

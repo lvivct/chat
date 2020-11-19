@@ -1,6 +1,5 @@
 ﻿using chat.Models;
 using Microsoft.AspNetCore.SignalR;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace chat.Hubs
@@ -29,11 +28,14 @@ namespace chat.Hubs
             await AppDb.MessagesDatabase.AddAsync(newmessage);
             await AppDb.SaveChangesAsync();
 
-            await Groups.AddToGroupAsync(Context.ConnectionId, chatId);
             await Clients.Group(chatId).SendAsync("ReceiveMessage", user, message); 
 
             await Clients.Group(chatId).SendAsync("ReceiveMessageToChat", user, message, newmessage.When, chatId);
-         
+        }
+        public async Task AddToGroupAsync(string chatId)
+        {
+            if(chatId != "")
+                await Groups.AddToGroupAsync(Context.ConnectionId, chatId);
         }
     }
 }
