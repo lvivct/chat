@@ -29,51 +29,60 @@
 
 
                 @if (signInManager.IsSignedIn(User))
-                {
-                    <form method="get" asp-action="Edit" asp-controller="User">
-                        <button type="submit">
-                            Edit
-                        </button>
-                    </form>
+                {    
+                <div class="mb-1 navbar navbar-expand-lg collapse navbar-collapse">
+                
+                    <ul class="navbar-nav  ml-auto ">
+                        <li class="nav-item avatar dropdown profile-out">
+                            <a class="nav-link"> <img class="profile-image rounded-circle z-depth-0" src="~/images/no_avatar.png" asp-append-version="true" /></a>
+                        </li>
 
-                    <form method="post" asp-action="logout" asp-controller="account">
-                        <button type="submit">
-                            Logout @User.Identity.Name
-                        </button>
-                    </form>
-                }
-                else
-                {
-                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                        <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-light headerbutton cardconvex"
-                                   asp-action="login" asp-controller="account">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light headerbutton cardconvex"
-                                   asp-action="register" asp-controller="account">Sign up</a>
-                            </li>
-                        </ul>
+                        <li class="nav-item mt-1 ordinary-text-color"><a class="nav-link">@User.Identity.Name</a></li>
+                        <li class="nav-item mt-1 dropdown no-border ">
+                            <a class="nav-link dropdown-toggle no-border ordinary-text-color " id="navbarDropdownMenuLink-4" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                <i class="ordinary-text-color fas fa-user"></i> <t class="ordinary-text-color" style="cursor:pointer;">Profile</t>
+                            </a>
+                            <div class="dropdown-menu back  dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
+                                <a class="dropdown-item-text ordinary-text-color " method="get" asp-action="Edit" asp-controller="User">Edit</a>
+                                <a class="dropdown-item-text ordinary-text-color " method="post" asp-action="logout" asp-controller="account">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            
+                 } else {
+                            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                                <ul class="navbar-nav flex-grow-1">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-light headerbutton cardconvex"
+                                           asp-action="login" asp-controller="account">Login</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-light headerbutton cardconvex"
+                                           asp-action="register" asp-controller="account">Sign up</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            }
+                            @{
+                                var routeValues = this.ViewContext.RouteData.Values;
+                                var controller = routeValues["controller"] as string;
+                                var action = routeValues["action"] as string;
+                            }
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle no-border markertext" data-toggle="dropdown" role="button" aria-expanded="false">Сhoose language <span class="caret"></span></a>
+                                    <ul class="dropdown-menu back  " role="menu">
+                                        <li class="dropdown-item-text">@Html.ActionLink("Ukrane", @action, @controller, new { culture = "uk-ua" }, new { rel = "alternate", hreflang = "ua" })</li>
+                                        <li class="dropdown-item-text">@Html.ActionLink("English", @action, @controller, new { culture = "en-us" }, new { rel = "alternate", hreflang = "en" })</li>
+                                        <li class="dropdown-item-text">@Html.ActionLink("Deutsche", @action, @controller, new { culture = "de-de" }, new { rel = "alternate", hreflang = "de" })</li>
+                                    </ul>
+                                </li>
+                            </ul>
                     </div>
-                }
-                @{
-                    var routeValues = this.ViewContext.RouteData.Values;
-                    var controller = routeValues["controller"] as string;
-                    var action = routeValues["action"] as string;
-                }
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle no-border markertext" data-toggle="dropdown" role="button" aria-expanded="false">Сhoose language <span class="caret"></span></a>
-                        <ul class="dropdown-menu back  " role="menu">
-                            <li class="dropdown-item-text">@Html.ActionLink("Ukrane", @action, @controller, new { culture = "uk-ua" }, new { rel = "alternate", hreflang = "ua" })</li>
-                            <li class="dropdown-item-text">@Html.ActionLink("English", @action, @controller, new { culture = "en-us" }, new { rel = "alternate", hreflang = "en" })</li>
-                            <li class="dropdown-item-text">@Html.ActionLink("Deutsche", @action, @controller, new { culture = "de-de" }, new { rel = "alternate", hreflang = "de" })</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+</nav>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
