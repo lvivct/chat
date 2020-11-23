@@ -4,7 +4,18 @@
 }
 
 <div class="text-light">
-    <div><a asp-action="AddMemder" asp-route-chatId="@Model.ChatId">Add</a></div>
+    <h1>Hi</h1>
+    @if (Model.AddUsersToChat)
+    {
+    <form asp-controller="Chat" asp-action="AddMemder" asp-route-ChatId="@Model.ChatId">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <label asp-for="NewUserName"></label>
+        <div><input asp-for="NewUserName" placeholder="WriteUserName"></div>
+
+        <div><button type="submit" asp-action="AddMemder" asp-route-chatId="@Model.ChatId">Add</button></div>
+    </form>
+    }
 
     <form method="post" asp-route-chatId="@Model.ChatId" asp-action="Leave">
         <div><button>LeveChat</button></div>
@@ -64,4 +75,5 @@
             <button>delete chat </button>
         </form>
     }
+
 </div>

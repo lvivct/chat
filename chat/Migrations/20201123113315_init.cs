@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace chat.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -53,7 +53,10 @@ namespace chat.Migrations
                 {
                     ChatId = table.Column<string>(nullable: false),
                     ChatName = table.Column<string>(nullable: false),
-                    PhotoPath = table.Column<string>(nullable: true)
+                    PhotoPath = table.Column<string>(nullable: true),
+                    LastMessageText = table.Column<string>(nullable: true),
+                    LastMessageSender = table.Column<string>(nullable: true),
+                    LastMessageWhen = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -172,7 +175,11 @@ namespace chat.Migrations
                 {
                     UserId = table.Column<string>(nullable: false),
                     ChatId = table.Column<string>(nullable: false),
-                    Id = table.Column<string>(nullable: true)
+                    RoleName = table.Column<string>(nullable: true),
+                    GiveRoles = table.Column<bool>(nullable: false),
+                    KickUsers = table.Column<bool>(nullable: false),
+                    EditChat = table.Column<bool>(nullable: false),
+                    AddUsersToChat = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -210,7 +217,7 @@ namespace chat.Migrations
                         column: x => x.ChatId,
                         principalTable: "ChatsDatabase",
                         principalColumn: "ChatId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

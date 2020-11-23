@@ -18,6 +18,7 @@ namespace chat.Models
             KickUsers = false;
             GiveRoles = false;
             EditChat = false;
+            AddUsersToChat = false;
         }
         public AppUserChat()
         {
@@ -31,7 +32,7 @@ namespace chat.Models
                 KickUsers = true;
                 GiveRoles = true;
                 EditChat = true;
-                AddUsers = true;
+                AddUsersToChat = true;
             }
             else
                 ctor(str);
@@ -40,7 +41,7 @@ namespace chat.Models
         public bool GiveRoles { get; set; }//1
         public bool KickUsers { get; set; }//2
         public bool EditChat { get; set; } //3
-        public bool AddUsers { get; set; } //4 
+        public bool AddUsersToChat { get; set; } //4 
 //
     }
 }

@@ -9,6 +9,8 @@
     <Compile Remove="Migrations\20201006200215_AddaUserName.Designer.cs" />
     <Compile Remove="Migrations\20201006202638_test.cs" />
     <Compile Remove="Migrations\20201006202638_test.Designer.cs" />
+    <Compile Remove="Migrations\20201123112331_merge.cs" />
+    <Compile Remove="Migrations\20201123112331_merge.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

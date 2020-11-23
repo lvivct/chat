@@ -20,9 +20,22 @@ namespace chat.Hubs
                 SenderName = user,
                 MessageText = message
             };
+            var currentChat = await AppDb.ChatsDatabase.FindAsync(chatId);
+            currentChat.LastMessageSender = user + ": ";
+            currentChat.LastMessageText = message;
+            currentChat.LastMessageWhen = newmessage.When;
+
             await AppDb.MessagesDatabase.AddAsync(newmessage);
             await AppDb.SaveChangesAsync();
-            await Clients.All.SendAsync("ReceiveMessage", user, message);
+
+            await Clients.Group(chatId).SendAsync("ReceiveMessage", user, message); 
+
+            await Clients.Group(chatId).SendAsync("ReceiveMessageToChat", user, message, newmessage.When, chatId);
+        }
+        public async Task AddToGroupAsync(string chatId)
+        {
+            if(chatId != "")
+                await Groups.AddToGroupAsync(Context.ConnectionId, chatId);
         }
     }
 }
