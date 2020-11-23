@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace chat.ViewModels
 {
-    public class ChatEditViewModel
+    public class EditChatViewModel
     {
         public string ChatId { get; set; }
 

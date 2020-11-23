@@ -97,7 +97,7 @@ namespace chat.Controllers
 
         //[HttpPost("[Action]/{chatId}")]
         [HttpPost]
-        public IActionResult AddMemder(ChatEditViewModel model)
+        public IActionResult AddMemder(EditChatViewModel model)
         {
             var User = AppDb.Users
                 .Where(b => b.UserName == model.NewUserName)
@@ -167,7 +167,7 @@ namespace chat.Controllers
                 allUsersIds.Add(allUsersChats[i].UserId);
             }
 
-            var viewmodel = new ChatEditViewModel
+            var viewmodel = new EditChatViewModel
             {
                 ChatId = chatId,
                 ChatName = thisChat.ChatName,
@@ -183,7 +183,7 @@ namespace chat.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> EditChat(ChatEditViewModel model)
+        public async Task<IActionResult> EditChat(EditChatViewModel model)
         {
             var thisChat = AppDb.ChatsDatabase.ToList().Find(e => e.ChatId == model.ChatId);
             thisChat.ChatName = model.ChatName;
