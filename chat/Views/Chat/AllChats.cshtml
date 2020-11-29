@@ -4,10 +4,13 @@
     <div class="row d-flex justify-content-start ">
         <div class="col-md-4 order-md-1">
 
-            <form class="example" action="action_page.php">
-                <input class="cardpressed search text-white" type="text" placeholder="Search chat.." name="search">
+
+            <form method="post" asp-action="Search">
+                <input asp-for="ChatName" class="cardpressed search text-white" type="text" placeholder="Search chat.." name="search">
                 <button class="search-button" type="submit"><i class="text-white fa fa-search"></i></button>
             </form>
+
+
             <ul class="list-unstyled">
                 @if (Model.ChatList != null)
                     @foreach (var chat in Model.ChatList)
@@ -35,7 +38,6 @@
                           
                 
                     }
-
             </ul>
             <a data-toggle="modal" data-target="#exampleModal" data-whatever="" asp-controller="Chat" asp-action="Create" class="col-md-4 float">
                 <i class="fa fa-plus my-float"></i>
@@ -141,5 +143,5 @@
     </div>
 </div>
 
-<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/signalr/dist/browser/signalr.min.js"></script>
 <script src="~/js/chat.js"></script>

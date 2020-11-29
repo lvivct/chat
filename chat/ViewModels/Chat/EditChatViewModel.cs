@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 
 namespace chat.ViewModels
 {
-    public class ChatEditViewModel
+    public class EditChatViewModel
     {
         public string ChatId { get; set; }
 
         [Required]
         public string ChatName { get; set; }
         public string ForPhoto { get; set; }
+        public string NewUserName { get; set; }
         public List<string> UserNameList { get; set; }
         public List<string> UserIdList { get; set; }
         public IFormFile Photo { get; set; }
@@ -22,5 +23,6 @@ namespace chat.ViewModels
         public bool EditChat { get; set; }
         public bool KickUsers { get; set; }
         public bool GiveRoles { get; set; }
+        public bool AddUsersToChat { get; set; }
     }
 }

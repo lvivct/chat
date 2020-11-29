@@ -12,7 +12,18 @@ connection.on("ReceiveMessage", function (user, message) {
     document.getElementById("messagesList").appendChild(li);
 });
 
+connection.on("ReceiveMessageToChat", function (user, message, when, chatId) {
+    user += ": ";
+
+    document.getElementById("nameToChat " + chatId).innerText = user;
+    document.getElementById("messageToChat " + chatId).innerText = message;
+    document.getElementById("whenToChat " + chatId).innerText = when;
+});
+
 connection.start().then(function () {
+    var chatId = document.getElementById("chatId").value;
+    connection.invoke("AddToGroupAsync", chatId);
+
     document.getElementById("sendButton").disabled = false;
 }).catch(function (err) {
     return console.error(err.toString());

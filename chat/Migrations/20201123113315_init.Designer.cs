@@ -10,8 +10,8 @@ using chat.Models;
 namespace chat.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201019144148_Init")]
-    partial class Init
+    [Migration("20201123113315_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -228,8 +228,19 @@ namespace chat.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<bool>("AddUsersToChat")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("EditChat")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("GiveRoles")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("KickUsers")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RoleName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ChatId", "UserId");
@@ -248,6 +259,15 @@ namespace chat.Migrations
                     b.Property<string>("ChatName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastMessageSender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastMessageText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastMessageWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PhotoPath")
                         .HasColumnType("nvarchar(max)");
@@ -356,7 +376,8 @@ namespace chat.Migrations
                 {
                     b.HasOne("chat.Models.Chat", "Chat")
                         .WithMany("Messages")
-                        .HasForeignKey("ChatId");
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

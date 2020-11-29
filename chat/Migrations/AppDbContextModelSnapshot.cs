@@ -226,7 +226,7 @@ namespace chat.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("AddUsers")
+                    b.Property<bool>("AddUsersToChat")
                         .HasColumnType("bit");
 
                     b.Property<bool>("EditChat")
@@ -237,9 +237,6 @@ namespace chat.Migrations
 
                     b.Property<bool>("KickUsers")
                         .HasColumnType("bit");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleName")
                         .HasColumnType("nvarchar(max)");
@@ -260,6 +257,15 @@ namespace chat.Migrations
                     b.Property<string>("ChatName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastMessageSender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastMessageText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastMessageWhen")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PhotoPath")
                         .HasColumnType("nvarchar(max)");

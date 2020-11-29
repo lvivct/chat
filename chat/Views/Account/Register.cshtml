@@ -1,4 +1,7 @@
 ﻿@model chat.Models.RegisterViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers.Localization
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
 @{
     ViewData["Title"] = "User Register";
 }
@@ -6,17 +9,17 @@
     <div class="row">
         <div class="col-sm">
             <div class="maintitle text-light">
-                <b>Thank you to accept</b>
+                <b> @Localizer["String2"]</b>
                 <p>
                     <t style="color:deeppink">C-Chat</t>!
                 </p>
             </div>
             <br>
             <t class="secondtitle text-light">
-                Already a member?
+                @Localizer["String1"]
                 <t class="secondmarkertext">
                     <a asp-action="Login" asp-controller="Account"
-                       class="nav-link" style="color:aqua">Login</a>
+                       class="nav-link" style="color:aqua">@Localizer["Login"]</a>
                 </t>
             </t>
         </div>
@@ -27,7 +30,7 @@
 
                 <div class="authcontainer cardflat">
                     <div class="row justify-content-center">
-                        <label class="text-light" asp-for="UserName"></label>
+                        <label class="text-light">@Localizer["UserName"]</label>
                     </div>
                     <div class="row justify-content-center">
                         <input class="concavecard text-white" asp-for="UserName" />
@@ -35,7 +38,7 @@
                     </div>
 
                     <div class="row justify-content-center">
-                        <label class="text-light" asp-for="Email"></label>
+                        <label class="text-light">@Localizer["Email"]</label>
                     </div>
                     <div class="row justify-content-center">
                         <input class="concavecard text-white" asp-for="Email" />
@@ -43,7 +46,7 @@
                     </div>
 
                     <div class="row justify-content-center">
-                        <label class="text-light" asp-for="Password"></label>
+                        <label class="text-light">@Localizer["Password"]</label>
                     </div>
                     <div class="row justify-content-center">
                         <input class="concavecard text-white" asp-for="Password" />
@@ -51,7 +54,7 @@
                     </div>
 
                     <div class="row justify-content-center">
-                        <label class="text-light" asp-for="ConfirmPassword"></label>
+                        <label class="text-light">@Localizer["ConfirmPassword"]</label>
                     </div>
                     <div class="row justify-content-center">
                         <input class="concavecard text-white" asp-for="ConfirmPassword" />
