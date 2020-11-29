@@ -24,7 +24,7 @@ body{
     min-height:100%;
 }
 .container-fluid{
-    margin-bottom:60px;
+    
 }
 
 
@@ -77,11 +77,15 @@ input {
     margin: 8px 0;
     border: none;    
 }
+input:before {
+    border:none;
+}
 input:focus  {
     border: none;
     outline: none;
     background-color:none;
 }
+
 
     input:-webkit-autofill,
     input:-webkit-autofill:hover,
@@ -286,7 +290,7 @@ input:checked:before {
     display:inline-block;
     padding:10px;
 }
-/* Sticky footer styles
+/* Sticky footer stles
 -------------------------------------------------- */
 html {
   font-size: 14px;
@@ -367,6 +371,10 @@ html {
     margin: 0;
     -webkit-overflow-scrolling: touch;
 }
+.list-unstyled-messages {
+    height: 60vh !important;
+   
+}
     .list-unstyled::-webkit-scrollbar {
         width: 10px;
     }
@@ -418,12 +426,20 @@ html {
 .modal-footer {
     border-top: 1px solid #00FFFF;
 }
+/*chat-section*/
+
+.chat-header {
+    height:42px;
+    padding:24px;
+}
+.message
 
 y {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
     height: 100%;
 }
+
 .footer {
   position: absolute;
   bottom: 0;

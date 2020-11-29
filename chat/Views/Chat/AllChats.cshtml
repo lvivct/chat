@@ -12,25 +12,28 @@
                 @if (Model.ChatList != null)
                     @foreach (var chat in Model.ChatList)
 
-                    {
+                    { 
                         <li class="list-group-flush flex-column align-items-start chatcard chat-item text-light">
-                            <div class="d-flex w-100 justify-content-between">
-                                <div class="logo text-white"><i class="fa fa-snapchat"></i></div>
-                                <div class="w-100">
-                                    <div class="d-flex w-75 justify-content-between">
-                                        @*<h5 class="mb-1">@chat.Chat.ChatName</h5>*@
-                                        <form asp-action="AllChats" asp-route-chatId="@chat.ChatId" method="post">
-                                            <button type="submit" class="mb-1">@chat.Chat.ChatName</button>
-                                        </form>
-                                        <small>3 days ago</small>
+                            <form asp-action="AllChats" asp-route-chatId="@chat.ChatId" method="post">
+                                <button class="w-100" style=" background:none;">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <div class="logo text-white"><i class="fa fa-snapchat"></i></div>
+                                        <div class="w-100">
+                                            <div class="d-flex w-75 justify-content-between">
+                                                <h5 class="mb-1 text-light">@chat.Chat.ChatName</h5>
+                                                <small class="ordinary-text-color">3 days ago</small>
+                                            </div>
+                                            <div class="d-flex w-100 justify-content-start">
+                                                <p class="mb-1 markertext">Kostya: </p>
+                                                <div class="ordinary-text-color hide-more-text text-sm-left"> Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="d-flex w-100 justify-content-start">
-                                        <p class="mb-1 markertext">Kostya: </p>
-                                        <div class="ordinary-text-color hide-more-text text-sm-left"> Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit</div>
-                                    </div>
-                                </div>
-                            </div>
+                                </button>
+                            </form>
                         </li>
+                          
+                
                     }
 
             </ul>
@@ -65,34 +68,76 @@
         </div>
        @if (Model.CurrentChatId != null)
        {
-        <div class=" text-white col-md-8 order-md-2">
-            @* вивід повідомлень*@
-            @if (Model.MessageList != null)
-                @foreach (var message in Model.MessageList.OrderBy(m => m.When))
-                {
-                    <h5>(@message.When) @message.SenderName : @message.MessageText</h5>
-                }
-            <h5 id="messagesList"></h5>@* вивід нових повідомлень*@
+    <div class="text-white col-md-8 order-md-2 d-flex flex-column y">
+        <div class="mt-4 row">
+            <nav class="navbar navbar-expand    flex-xl-grow-1 w-100  cardflat">
+                <div class="container">
+                    <ul class="ml-auto navbar-nav navbar-right">
+                        <li class="nav-item profile-out justify-content-center">
 
-            <div>
-                <input hidden value="@User.Identity.Name" id="userInput" /> @*константи*@
-                <input hidden value="@Model.CurrentUserId" id="userId" />
-                <input id="chatId" asp-for="CurrentChatId" value="@Model.CurrentChatId" type="hidden" />
+                            <a class="text-white"> <i class="fa fa-snapchat" style="padding:9px; font-size:32px;"></i></a>
+
+                        </li>
+                        <li class="mt-1 nav-item ordinary-text-color"><a class="nav-link">Chat Name</a></li>
+                        <li class="mt-1 nav-item dropdown no-border ">
+                            <a class="nav-link dropdown-toggle no-border ordinary-text-color " id="navbarDropdownMenuLink-4" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                <i class="ordinary-text-color fas fa-cog"></i>
+                            </a>
+                            <div class="dropdown-menu back  dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
+                                <a class="dropdown-item-text ordinary-text-color " asp-action="EditChat">Edit Chat</a>
+                                <a class="dropdown-item-text ordinary-text-color" asp-action="EditChat">Add user</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        
+        <div class="row flex-grow-1 m-2 align-items-end" >
+          
+        <div>
+            <input hidden value="@User.Identity.Name" id="userInput" /> @*константи*@
+            <input hidden value="@Model.CurrentUserId" id="userId" />
+            <input id="chatId" asp-for="CurrentChatId" value="@Model.CurrentChatId" type="hidden" />
+
+        </div>
+
+        <div class="w-100 d-flex flex-column " >
+            <div class="p-2">
+                <ul id="messages" class="list-unstyled list-unstyled-messages mb-auto">
+                    @* вивід повідомлень *@
+                    @if (Model.MessageList != null)@foreach (var message in Model.MessageList.OrderBy(m => m.When))
+                        {
+                            <li class="cardflat p-4 m-5 ordinary-text-color">(@message.When) @message.SenderName : @message.MessageText</li>
+                        }
+                    @* <li class="p-4 m-2 cardflat ordinary-text-color" id="messagesList"></li>*@
+                </ul>
+                <script>
+                    var messageList = document.getElementById("messages");
+                    messageList.scrollTop = messageList.scrollHeight;
+                </script>
+            </div>
 
                 @* поле вводу *@
-                <label asp-for="NewMessageText" class="col-sm-2 col-form-label"></label>
-                <div class="col-sm-10">
-                    <input id="messageInput" asp-for="NewMessageText" class="form-control" placeholder="WriteMessage">
-                </div>
+        <div class="p-2 d-flex">
+            <input id="messageInput" class="p-2 w-100 cardpressed  text-white" type="text" placeholder="Write your message...">
+            <div class="p-2 align-content-center bd-highlight">
                 @* кнопка відправлення *@
-                <div class="col-sm-10">
-                    <button id="sendButton" type="submit" class="btn btn-primary">Send</button>
-                </div>
-                @* "кнопка" редагувати чат *@
-                <div><a asp-action="EditChat" asp-route-chatId="@Model.CurrentChatId">EditChat</a></div>  
+                <button id="sendButton" class="search-button submit"><i class="text-light fa fa-paper-plane" aria-hidden="true"></i></button>
+                <script>
+                    document.getElementById("sendButton").addEventListener('click', function () {
+                        document.location.reload();
+                    });
+                </script>
             </div>
         </div>
-       }
+
+
+        </div>
+        </div>
+            </div>
+        }
     </div>
 </div>
 

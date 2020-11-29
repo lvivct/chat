@@ -30,8 +30,7 @@
 
                 @if (signInManager.IsSignedIn(User))
                 {    
-                <div class="mb-1 navbar navbar-expand-lg collapse navbar-collapse">
-                
+                <div class="mb-1 navbar navbar-expand-lg collapse navbar-collapse">           
                     <ul class="navbar-nav  ml-auto ">
                         <li class="nav-item avatar dropdown profile-out">
                             <a class="nav-link"> <img class="profile-image rounded-circle z-depth-0" src="~/images/no_avatar.png" asp-append-version="true" /></a>
@@ -85,7 +84,7 @@
 </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-5">
             @RenderBody()
         </main>
     </div>
