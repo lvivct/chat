@@ -105,15 +105,36 @@
 
         </div>
 
-        <div class="w-100 d-flex flex-column " >
-            <div class="p-2">
+        <div class="w-100  ml-auto d-flex flex-column">
+            <div class="">
                 <ul id="messages" class="list-unstyled list-unstyled-messages mb-auto">
                     @* вивід повідомлень *@
-                    @if (Model.MessageList != null)@foreach (var message in Model.MessageList.OrderBy(m => m.When))
+                    @if (Model.MessageList != null)
+                        @foreach (var message in Model.MessageList.OrderBy(m => m.When))
                         {
-                            <li class="cardflat p-4 m-5 ordinary-text-color">(@message.When) @message.SenderName : @message.MessageText</li>
+                            @*TODO: зробити превірку на те чи імя залогованого користувача
+                співпадає  імям відправника повіомлення якщо такт тоді цей код якщо ні
+                той що нижче закоментований*@
+                            <li class="w-50 ml-auto m-4 ordinary-text-color">
+                                    <div class="row cardflat p-4"> @message.MessageText </div>
+                                    <div class="row ml-auto d-flex">
+                                        <small class="ml-auto pr-1 ordinary-text-color">@message.When.ToString().Substring(10, 5)</small>
+                                        <small class="pr-1 ordinary-text-color">@message.SenderName</small>
+                                        <img class="p-1 small-profile rounded-circle z-depth-0" src="~/images/no_avatar.png" asp-append-version="true" \>
+                                    </div>
+                                </li>
+                                
+                            @*
+                            <li class="w-50 mr-auto m-4 ordinary-text-color">
+                                <div class="row cardflat p-4"> @message.MessageText </div>
+                                <div class="row mr-auto d-flex">
+                                    <img class="p-1 small-profile rounded-circle z-depth-0" src="~/images/no_avatar.png" asp-append-version="true" \>
+                                    <small class="pr-1 ordinary-text-color">@message.SenderName</small>
+                                    <small class="mr-auto pr-1 ordinary-text-color">@message.When.ToString().Substring(10, 5)</small>
+                                </div>
+                            </li>*@
                         }
-                    @* <li class="p-4 m-2 cardflat ordinary-text-color" id="messagesList"></li>*@
+                        @* <li class="p-4 m-2 cardflat ordinary-text-color" id="messagesList"></li>*@
                 </ul>
                 <script>
                     var messageList = document.getElementById("messages");
@@ -129,7 +150,8 @@
                 <button id="sendButton" class="search-button submit"><i class="text-light fa fa-paper-plane" aria-hidden="true"></i></button>
                 <script>
                     document.getElementById("sendButton").addEventListener('click', function () {
-                        document.location.reload();
+                        location.reload();
+                        
                     });
                 </script>
             </div>

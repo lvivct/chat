@@ -275,6 +275,12 @@ input:checked:before {
     overflow: hidden;
     border-radius: 50%;
 }
+.small-profile {
+    width: 24px;
+    height: 24px;
+    
+   
+}
 
 .nav{
     border-width:1px 0;
