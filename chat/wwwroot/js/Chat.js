@@ -4,13 +4,54 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
 //Disable send button until connection is established
 document.getElementById("sendButton").disabled = true;
+function getDate() {
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
+    var today = new Date();
+    var mm = months[today.getMonth()];
+    var day = days[today.getDay()];
+
+    return day + " " + mm + " " + today.getHours() + ":" + today.getMinutes();
+};
 connection.on("ReceiveMessage", function (user, message) {
     var encodedMsg = user + ": " + message;
     var li = document.createElement("li");
-    li.textContent = encodedMsg;
+   
+    var messgeCard = document.createElement("div");
+    messgeCard.setAttribute("class", "row cardflat pt-2 pb-2 pr-3 pl-3");
+    messgeCard.innerHTML = message;
+    li.appendChild(messgeCard);
+
+   
+
+    var underMessage = document.createElement("div");
+    underMessage.setAttribute("class", "row ml-auto d-flex");
+
+    var date = document.createElement("small");
+    date.setAttribute("class", "ml-auto pr-1 ordinary-text-color");
+    date.innerHTML = getDate();
+    underMessage.appendChild(date);
+
+    var name = document.createElement("small");
+    name.setAttribute("class", "pr-1 ordinary-text-color");
+    name.innerHTML = user;
+    underMessage.appendChild(name);
+
+    var img = document.createElement("img");
+    img.setAttribute("class", "p-1 small-profile rounded-circle z-depth-0");
+    img.src = "/images/no_avatar.png";
+    underMessage.appendChild(img);
+
+    li.appendChild(underMessage);
     document.getElementById("messagesList").appendChild(li);
+
+    document.getElementById("messageInput").value = "";
+    var messageList = document.getElementById("messages");
+    messageList.scrollTop = messageList.scrollHeight;
 });
+
 
 connection.on("ReceiveMessageToChat", function (user, message, when, chatId) {
     user += ": ";
