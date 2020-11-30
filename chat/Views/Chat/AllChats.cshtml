@@ -21,7 +21,7 @@
                                         <div class="w-100">
                                             <div class="d-flex w-75 justify-content-between">
                                                 <h5 class="mb-1 text-light">@chat.Chat.ChatName</h5>
-                                                <small id="whenToChat @chat.ChatId">@chat.Chat.LastMessageWhen</small>
+                                                <small id="whenToChat @chat.ChatId" class="ordinary-text-color">@chat.Chat.LastMessageWhen.ToString("hh:mm")</small>
                                             </div>
                                             <div class="d-flex w-100 justify-content-start">
                                                 <p id="nameToChat @chat.ChatId" class="mb-1 markertext">@chat.Chat.LastMessageSender</p>
@@ -112,10 +112,10 @@
                             @*TODO: зробити превірку на те чи імя залогованого користувача
                 співпадає  імям відправника повіомлення якщо такт тоді цей код якщо ні
                 той що нижче закоментований*@
-                            <li class="w-50 ml-auto m-4 ordinary-text-color">
-                                    <div class="row cardflat p-4"> @message.MessageText </div>
+                            <li class="w-50 ml-auto m-3 ordinary-text-color">
+                                    <div class="row cardflat pt-2 pb-2 pr-3 pl-3"> @message.MessageText </div>
                                     <div class="row ml-auto d-flex">
-                                        <small class="ml-auto pr-1 ordinary-text-color">@message.When.ToString().Substring(10, 5)</small>
+                                        <small class="ml-auto pr-1 ordinary-text-color">@message.When.ToString("ddd MMM hh:mm")</small>
                                         <small class="pr-1 ordinary-text-color">@message.SenderName</small>
                                         <img class="p-1 small-profile rounded-circle z-depth-0" src="~/images/no_avatar.png" asp-append-version="true" \>
                                     </div>
@@ -147,8 +147,7 @@
                 <button id="sendButton" class="search-button submit"><i class="text-light fa fa-paper-plane" aria-hidden="true"></i></button>
                 <script>
                     document.getElementById("sendButton").addEventListener('click', function () {
-                        location.reload();
-                        
+                       
                     });
                 </script>
             </div>
