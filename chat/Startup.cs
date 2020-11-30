@@ -39,8 +39,12 @@ namespace chat
 
             services.AddSignalR();
 
-            services.AddIdentity<AppUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppDbContext>();
+            services.AddIdentity<AppUser, IdentityRole>(options =>
+            {
+                //options.SignIn.RequireConfirmedEmail = true;
+            })
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddMvc().AddViewLocalization();
