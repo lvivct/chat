@@ -23,7 +23,7 @@ namespace chat.Controllers
             return View();
         }
 
-        [HttpPost("[Action]")]
+        // [HttpPost("[Action]")] temp
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
