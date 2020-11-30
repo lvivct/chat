@@ -4,39 +4,36 @@
     <div class="row d-flex justify-content-start ">
         <div class="col-md-4 order-md-1">
 
-
             <form method="post" asp-action="Search">
                 <input asp-for="ChatName" class="cardpressed search text-white" type="text" placeholder="Search chat.." name="search">
                 <button class="search-button" type="submit"><i class="text-white fa fa-search"></i></button>
             </form>
 
-
             <ul class="list-unstyled">
                 @if (Model.ChatList != null)
                     @foreach (var chat in Model.ChatList)
-
-                    { 
+                    {                           
                         <li class="list-group-flush flex-column align-items-start chatcard chat-item text-light">
-                            <form asp-action="AllChats" asp-route-chatId="@chat.ChatId" method="post">
+                            <form asp-action="SwitchChat" asp-route-chatId="@chat.ChatId" method="post">
                                 <button class="w-100" style=" background:none;">
                                     <div class="d-flex w-100 justify-content-between">
                                         <div class="logo text-white"><i class="fa fa-snapchat"></i></div>
                                         <div class="w-100">
                                             <div class="d-flex w-75 justify-content-between">
                                                 <h5 class="mb-1 text-light">@chat.Chat.ChatName</h5>
-                                                <small class="ordinary-text-color">3 days ago</small>
+                                                <small id="whenToChat @chat.ChatId">@chat.Chat.LastMessageWhen</small>
                                             </div>
                                             <div class="d-flex w-100 justify-content-start">
-                                                <p class="mb-1 markertext">Kostya: </p>
-                                                <div class="ordinary-text-color hide-more-text text-sm-left"> Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit</div>
+                                                <p id="nameToChat @chat.ChatId" class="mb-1 markertext">@chat.Chat.LastMessageSender</p>
+                                                <div id="messageToChat @chat.ChatId" class="ordinary-text-color hide-more-text text-sm-left">
+                                                    @chat.Chat.LastMessageText
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </button>
                             </form>
                         </li>
-                          
-                
                     }
             </ul>
             <a data-toggle="modal" data-target="#exampleModal" data-whatever="" asp-controller="Chat" asp-action="Create" class="col-md-4 float">
@@ -87,8 +84,8 @@
                                 <i class="ordinary-text-color fas fa-cog"></i>
                             </a>
                             <div class="dropdown-menu back  dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
-                                <a class="dropdown-item-text ordinary-text-color " asp-action="EditChat">Edit Chat</a>
-                                <a class="dropdown-item-text ordinary-text-color" asp-action="EditChat">Add user</a>
+                                <a class="dropdown-item-text ordinary-text-color" asp-route-chatId="@Model.CurrentChatId" asp-action="EditChat">Edit Chat</a>
+                                <a class="dropdown-item-text ordinary-text-color" asp-route-chatId="@Model.CurrentChatId" asp-action="EditChat">Add user</a>
                             </div>
                         </li>
                     </ul>
@@ -98,48 +95,44 @@
         
         <div class="row flex-grow-1 m-2 align-items-end" >
           
-        <div>
-            <input hidden value="@User.Identity.Name" id="userInput" /> @*константи*@
-            <input hidden value="@Model.CurrentUserId" id="userId" />
-            <input id="chatId" asp-for="CurrentChatId" value="@Model.CurrentChatId" type="hidden" />
+            <div>
+                <input hidden value="@User.Identity.Name" id="userInput" /> @*константи*@
+                <input hidden value="@Model.CurrentUserId" id="userId" />
+                <input id="chatId" asp-for="CurrentChatId" value="@Model.CurrentChatId" type="hidden" />
 
-        </div>
-
-        <div class="w-100 d-flex flex-column " >
-            <div class="p-2">
-                <ul id="messages" class="list-unstyled list-unstyled-messages mb-auto">
-                    @* вивід повідомлень *@
-                    @if (Model.MessageList != null)@foreach (var message in Model.MessageList.OrderBy(m => m.When))
-                        {
-                            <li class="cardflat p-4 m-5 ordinary-text-color">(@message.When) @message.SenderName : @message.MessageText</li>
-                        }
-                    @* <li class="p-4 m-2 cardflat ordinary-text-color" id="messagesList"></li>*@
-                </ul>
-                <script>
-                    var messageList = document.getElementById("messages");
-                    messageList.scrollTop = messageList.scrollHeight;
-                </script>
             </div>
 
-                @* поле вводу *@
-        <div class="p-2 d-flex">
-            <input id="messageInput" class="p-2 w-100 cardpressed  text-white" type="text" placeholder="Write your message...">
-            <div class="p-2 align-content-center bd-highlight">
-                @* кнопка відправлення *@
-                <button id="sendButton" class="search-button submit"><i class="text-light fa fa-paper-plane" aria-hidden="true"></i></button>
-                <script>
-                    document.getElementById("sendButton").addEventListener('click', function () {
-                        document.location.reload();
-                    });
-                </script>
+            <div class="w-100 d-flex flex-column " >
+                <div class="p-2">
+
+                    <ul id="messages" class="list-unstyled list-unstyled-messages mb-auto">
+                        @* вивід повідомлень *@
+                        @if (Model.MessageList != null)@foreach (var message in Model.MessageList.OrderBy(m => m.When))
+                            {
+                                <li class="cardflat p-4 m-5 ordinary-text-color">(@message.When) @message.SenderName : @message.MessageText</li>
+                            }
+                    </ul>
+                    <ul class="cardflat p-4 m-5 ordinary-text-color" id="messagesList"></ul>
+
+                    <script>
+                        var messageList = document.getElementById("messages");
+                        messageList.scrollTop = messageList.scrollHeight;
+                    </script>
+                </div>
+
+                        @* поле вводу *@
+                <div class="p-2 d-flex">
+                    <input id="messageInput" class="p-2 w-100 cardpressed  text-white" type="text" placeholder="Write your message...">
+                    <div class="p-2 align-content-center bd-highlight">
+                        @* кнопка відправлення *@
+                        <button id="sendButton" class="search-button submit"><i class="text-light fa fa-paper-plane" aria-hidden="true"></i></button>
+       
+                    </div>
+                </div>
             </div>
         </div>
-
-
-        </div>
-        </div>
-            </div>
-        }
+    </div>
+       }
     </div>
 </div>
 
