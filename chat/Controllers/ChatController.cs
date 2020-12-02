@@ -42,6 +42,7 @@ namespace chat.Controllers
             var model = new AllChatsViewModel
             {
                 CurrentUserId = CurrentUserId,
+                CurrentUserPhotoPath = CurrentUser.Photopath,
                 ChatList = ChatList
             };
             AppUserChat CurrentChat;

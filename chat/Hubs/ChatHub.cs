@@ -11,14 +11,15 @@ namespace chat.Hubs
         {
             AppDb = appDb;
         }       
-        public async Task SendMessage(string user, string message, string chatId, string userId)
+        public async Task SendMessage(string user, string message, string chatId, string userId, string photoPath)
         {
             Message newmessage = new Message
             {
                 ChatId = chatId,
                 SenderId = userId,
                 SenderName = user,
-                MessageText = message
+                MessageText = message,
+                PhotoPath = photoPath
             };
             var currentChat = await AppDb.ChatsDatabase.FindAsync(chatId);
             currentChat.LastMessageSender = user + ": ";

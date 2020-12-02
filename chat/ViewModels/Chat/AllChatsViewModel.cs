@@ -12,6 +12,7 @@ namespace chat.ViewModels
         public List<Message> MessageList { get; set; }
         public string ChatName { get; set; }
         public string CurrentUserId { get; set; }
+        public string CurrentUserPhotoPath { get; set; }
         public string CurrentChatId { get; set; }
         public string NewMessageText { get; set; }
     }

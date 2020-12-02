@@ -57,6 +57,11 @@ namespace chat.Controllers
                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                     model.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
                     CurrentUser.Photopath = uniqueFileName;
+
+                    var messages = AppDb.MessagesDatabase;
+                    foreach (var message in messages)
+                        if (message.SenderId == model.UserId)
+                            message.PhotoPath = CurrentUser.Photopath;
                 }
                 if (CurrentUser.Email != model.Email)
                     CurrentUser.Email = model.Email;

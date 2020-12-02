@@ -16,7 +16,9 @@ connection.on("ReceiveMessage", function (user, message, messageDate) {
     messgeCard.innerHTML = message;
     date.innerHTML = messageDate;
     name.innerHTML = user;
-    img.src = "/images/no_avatar.png";
+    img.src = "/images/" + document.getElementById("photoPath").value;
+
+    underMessage.appendChild(img);
     if (document.getElementById("userInput").value === user) {
         li.setAttribute("class","w-50 ml-auto m-3 ordinary-text-color");
         messgeCard.setAttribute("class", "row cardflat pt-2 pb-2 pr-3 pl-3");     
@@ -43,7 +45,12 @@ connection.on("ReceiveMessage", function (user, message, messageDate) {
     }
     
     li.appendChild(messgeCard);
+    var name = document.createElement("small");
+    name.setAttribute("class", "pr-1 ordinary-text-color");
+    name.innerHTML = user;
+    underMessage.appendChild(name);
 
+     
     li.appendChild(underMessage);
     document.getElementById("messagesList").appendChild(li);
 
@@ -75,8 +82,9 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     var message = document.getElementById("messageInput").value;
     var chatId = document.getElementById("chatId").value;
     var userId = document.getElementById("userId").value;
+    var photoPath = document.getElementById("photoPath").value;
 
-    connection.invoke("SendMessage", user, message, chatId, userId).catch(function (err) {
+    connection.invoke("SendMessage", user, message, chatId, userId, photoPath).catch(function (err) {
         return console.error(err.toString());
     });
     event.preventDefault();
