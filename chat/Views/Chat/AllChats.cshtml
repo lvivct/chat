@@ -125,7 +125,7 @@
                                     <div class="row mr-auto d-flex">
                                         <img class="p-1 small-profile rounded-circle z-depth-0" src="~/images/no_avatar.png" asp-append-version="true" \>
                                         <small class="pr-1 ordinary-text-color">@message.SenderName</small>
-                                        <small class="mr-auto pr-1 ordinary-text-color">@message.When.ToString().Substring(10, 5)</small>
+                                        <small class="mr-auto pr-1 ordinary-text-color">@message.When.ToString("ddd MMM hh:mm")</small>
                                     </div>
                                 </li>
                             }
