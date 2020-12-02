@@ -39,9 +39,10 @@ connection.on("ReceiveMessage", function (user, message) {
     name.innerHTML = user;
     underMessage.appendChild(name);
 
+     
     var img = document.createElement("img");
     img.setAttribute("class", "p-1 small-profile rounded-circle z-depth-0");
-    img.src = "/images/no_avatar.png";
+    img.src = "/images/" + document.getElementById("photoPath").value;
     underMessage.appendChild(img);
 
     li.appendChild(underMessage);
@@ -75,8 +76,9 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     var message = document.getElementById("messageInput").value;
     var chatId = document.getElementById("chatId").value;
     var userId = document.getElementById("userId").value;
+    var photoPath = document.getElementById("photoPath").value;
 
-    connection.invoke("SendMessage", user, message, chatId, userId).catch(function (err) {
+    connection.invoke("SendMessage", user, message, chatId, userId, photoPath).catch(function (err) {
         return console.error(err.toString());
     });
     event.preventDefault();

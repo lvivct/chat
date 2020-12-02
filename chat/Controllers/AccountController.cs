@@ -45,6 +45,7 @@ namespace chat.Controllers
                 {
                     UserName = model.UserName,
                     Email = model.Email,
+                    Photopath = "~/images/no_avatar.png"
                 };
                 var result = await userManager.CreateAsync(user, model.Password);
 

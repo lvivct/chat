@@ -98,6 +98,7 @@
             <div>
                 <input hidden value="@User.Identity.Name" id="userInput" /> @*константи*@
                 <input hidden value="@Model.CurrentUserId" id="userId" />
+                <input hidden value="@Model.CurrentUserPhotoPath" id="photoPath" />
                 <input id="chatId" asp-for="CurrentChatId" value="@Model.CurrentChatId" type="hidden" />
 
             </div>
@@ -117,7 +118,7 @@
                                 <div class="row ml-auto d-flex">
                                     <small class="ml-auto pr-1 ordinary-text-color">@message.When.ToString("ddd MMM hh:mm")</small>
                                     <small class="pr-1 ordinary-text-color">@message.SenderName</small>
-                                    <img class="p-1 small-profile rounded-circle z-depth-0" src="~/images/no_avatar.png" asp-append-version="true" \>
+                                    <img class="p-1 small-profile rounded-circle z-depth-0" src="~/images/@message.PhotoPath" asp-append-version="true" \>
                                 </div>
                             </li>
 
