@@ -6,31 +6,43 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 document.getElementById("sendButton").disabled = true;
 
 connection.on("ReceiveMessage", function (user, message, messageDate) {
-    var encodedMsg = user + ": " + message;
     var li = document.createElement("li");
-   
     var messgeCard = document.createElement("div");
-    messgeCard.setAttribute("class", "row cardflat pt-2 pb-2 pr-3 pl-3");
-    messgeCard.innerHTML = message;
-    li.appendChild(messgeCard);
-
     var underMessage = document.createElement("div");
-    underMessage.setAttribute("class", "row ml-auto d-flex");
-
     var date = document.createElement("small");
-    date.setAttribute("class", "ml-auto pr-1 ordinary-text-color");
-    date.innerHTML = messageDate;
-    underMessage.appendChild(date);
-
     var name = document.createElement("small");
-    name.setAttribute("class", "pr-1 ordinary-text-color");
-    name.innerHTML = user;
-    underMessage.appendChild(name);
-
     var img = document.createElement("img");
-    img.setAttribute("class", "p-1 small-profile rounded-circle z-depth-0");
+
+    messgeCard.innerHTML = message;
+    date.innerHTML = messageDate;
+    name.innerHTML = user;
     img.src = "/images/no_avatar.png";
-    underMessage.appendChild(img);
+    if (document.getElementById("userInput").value === user) {
+        li.setAttribute("class","w-50 ml-auto m-3 ordinary-text-color");
+        messgeCard.setAttribute("class", "row cardflat pt-2 pb-2 pr-3 pl-3");     
+        underMessage.setAttribute("class", "row ml-auto d-flex");
+        date.setAttribute("class", "ml-auto pr-1 ordinary-text-color");    
+        name.setAttribute("class", "pr-1 ordinary-text-color");   
+        img.setAttribute("class", "p-1 small-profile rounded-circle z-depth-0");
+
+        
+        underMessage.appendChild(date);
+        underMessage.appendChild(name);
+        underMessage.appendChild(img);
+    } else {
+        li.setAttribute("class", "w-50 mr-auto m-4 ordinary-text-color");
+        messgeCard.setAttribute("class", "row cardflat pt-2 pb-2 pr-3 pl-3");
+        underMessage.setAttribute("class", "row mr-auto d-flex");
+        date.setAttribute("class", "mr-auto pr-1 ordinary-text-color");
+        name.setAttribute("class", "pr-1 ordinary-text-color");
+        img.setAttribute("class", "p-1 small-profile rounded-circle z-depth-0");
+
+        underMessage.appendChild(img);
+        underMessage.appendChild(name);
+        underMessage.appendChild(date);
+    }
+    
+    li.appendChild(messgeCard);
 
     li.appendChild(underMessage);
     document.getElementById("messagesList").appendChild(li);
