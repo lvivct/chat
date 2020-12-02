@@ -28,9 +28,9 @@ namespace chat.Hubs
             await AppDb.MessagesDatabase.AddAsync(newmessage);
             await AppDb.SaveChangesAsync();
 
-            await Clients.Group(chatId).SendAsync("ReceiveMessage", user, message); 
+            await Clients.Group(chatId).SendAsync("ReceiveMessage", user, message, newmessage.When.ToString("ddd MMM hh:mm")); 
 
-            await Clients.Group(chatId).SendAsync("ReceiveMessageToChat", user, message, newmessage.When, chatId);
+            await Clients.Group(chatId).SendAsync("ReceiveMessageToChat", user, message, newmessage.When.ToString("h:m"), chatId);
         }
         public async Task AddToGroupAsync(string chatId)
         {

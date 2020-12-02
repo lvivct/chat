@@ -4,18 +4,8 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
 //Disable send button until connection is established
 document.getElementById("sendButton").disabled = true;
-function getDate() {
-    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-    var today = new Date();
-    var mm = months[today.getMonth()];
-    var day = days[today.getDay()];
-
-    return day + " " + mm + " " + today.getHours() + ":" + today.getMinutes();
-};
-connection.on("ReceiveMessage", function (user, message) {
+connection.on("ReceiveMessage", function (user, message, messageDate) {
     var encodedMsg = user + ": " + message;
     var li = document.createElement("li");
    
@@ -24,14 +14,12 @@ connection.on("ReceiveMessage", function (user, message) {
     messgeCard.innerHTML = message;
     li.appendChild(messgeCard);
 
-   
-
     var underMessage = document.createElement("div");
     underMessage.setAttribute("class", "row ml-auto d-flex");
 
     var date = document.createElement("small");
     date.setAttribute("class", "ml-auto pr-1 ordinary-text-color");
-    date.innerHTML = getDate();
+    date.innerHTML = messageDate;
     underMessage.appendChild(date);
 
     var name = document.createElement("small");
