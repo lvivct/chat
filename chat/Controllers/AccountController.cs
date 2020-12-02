@@ -1,7 +1,8 @@
 ﻿using chat.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
+using MailKit.Net.Smtp;
+using MimeKit;
 using System.Threading.Tasks;
 
 namespace chat.Controllers
@@ -47,10 +48,35 @@ namespace chat.Controllers
                     Email = model.Email,
                     Photopath = "~/images/no_avatar.png"
                 };
-                var result = await userManager.CreateAsync(user, model.Password);
-
+                var result = await userManager.CreateAsync(user, model.Password);       
                 if (result.Succeeded)
                 {
+                    var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var confirmationLink = Url.Action("ConfirmEmail", "Account",
+                        new { userId = user.Id, token = token }, Request.Scheme);
+
+
+
+                    MimeMessage message = new MimeMessage();
+
+                    MailboxAddress from = new MailboxAddress("Cchat", "admin@example.com");
+                    message.From.Add(from);
+                    MailboxAddress to = new MailboxAddress(model.UserName, model.Email);
+                    message.To.Add(to);
+                    message.Subject = "Confirm your email";
+
+                    BodyBuilder bodyBuilder = new BodyBuilder();
+                    bodyBuilder.TextBody = "Welcome to the Cchat Thanks for joining!\n" + 
+                        "Please verify your email address to get access to Cchat " +  confirmationLink;
+
+                    message.Body = bodyBuilder.ToMessageBody();
+
+                    SmtpClient smtp = new SmtpClient();
+                    smtp.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+                    smtp.Authenticate("viktor01444", "viktorxx2001");
+                    smtp.Send(message);
+                    smtp.Disconnect(true);
+
                     await signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Hello", "MainMenu");
                 }
@@ -84,6 +110,30 @@ namespace chat.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
             }
             return View(model);
+        }
+
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (userId == null || token == null)
+            {
+                return RedirectToAction("index", "home");
+            }
+
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"The User ID {userId} is invalid";
+                return View("NotFound");
+            }
+
+            var result = await userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                return View();
+            }
+
+            ViewBag.ErrorTitle = "Email cannot be confirmed";
+            return View("Error");
         }
     }
 }

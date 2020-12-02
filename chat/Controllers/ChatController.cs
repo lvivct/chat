@@ -75,25 +75,23 @@ namespace chat.Controllers
         [HttpPost]
         public IActionResult Create(string chatName)
         {
-            if (ModelState.IsValid)
-            {
-                Chat newchat = new Chat
-                {
-                    ChatName = chatName
-                };
-                AppDb.ChatsDatabase.Add(newchat);
-                AppDb.SaveChanges();
-
-                AppUserChat newAppUserChat = new AppUserChat("admin")
-                {
-                    ChatId = newchat.ChatId,
-                    UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value
-                };
-                AppDb.ChatsUsersDatabase.Add(newAppUserChat);
-                AppDb.SaveChanges();
+            if(chatName == null)
                 return RedirectToAction("AllChats", "Chat");
-            }
-            return View();
+            Chat newchat = new Chat
+            {
+                ChatName = chatName
+            };
+            AppDb.ChatsDatabase.Add(newchat);
+            AppDb.SaveChanges();
+
+            AppUserChat newAppUserChat = new AppUserChat("admin")
+            {
+                ChatId = newchat.ChatId,
+                UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value
+            };
+            AppDb.ChatsUsersDatabase.Add(newAppUserChat);
+            AppDb.SaveChanges();
+            return RedirectToAction("AllChats", "Chat");
         }
 
         //[HttpPost("[Action]/{chatId}")]
