@@ -11,6 +11,9 @@ for details on configuring this project to bundle and minify static web assets. 
     border-right: none;
     border-left: none;
 }
+.border-aqua {
+    border-bottom-color: aqua !important;
+}
 .poiter {
     cursor:pointer;
 }
@@ -49,7 +52,13 @@ body{
     background: #1c262c;
     box-shadow: 20px 20px 60px #182025, -20px -20px 60px #202c33;
 }
- .concavecard {
+.concavecard {
+    border-radius: 50px;
+    background: linear-gradient(145deg, #192228, #1e292f);
+    box-shadow: 20px 20px 31px #141b20, -20px -20px 31px #243138;
+}
+.cardline {
+    height:16px;
     border-radius: 50px;
     background: linear-gradient(145deg, #192228, #1e292f);
     box-shadow: 20px 20px 31px #141b20, -20px -20px 31px #243138;
@@ -198,6 +207,20 @@ button:focus {
     cursor: pointer;
     box-shadow: -8px -4px 8px 0px rgba(255,255,255,0.05), 8px 4px 12px 0px rgba(0,0,0,0.5), inset -4px -4px 4px 0px rgba(255,255,255,0.05), inset 4px 4px 4px 0px rgba(0,0,0,0.5);
 }
+.custom-file-label {
+    border: none;
+    border-radius: 25px;
+    padding-left: 16px !important;
+    box-shadow: -8px -4px 8px 0px rgba(255,255,255,0.05), 8px 4px 12px 0px rgba(0,0,0,0.5), inset -4px -4px 4px 0px rgba(255,255,255,0.05), inset 4px 4px 4px 0px rgba(0,0,0,0.5) !important;
+}
+    .custom-file-label:after {
+        border: none !important;
+        background: #1c262c;
+        border-radius: 20px;
+        height: calc(1.65em + .75rem) !important;
+        padding: .375rem .95rem !important;
+        box-shadow: -3px -3px 7px rgba(255,255,255,0.05), 3px 3px 5px rgba(0,0,0,0.5) !important;
+    }
 
 input:before {
     position: absolute;
@@ -417,9 +440,12 @@ html {
 /*dialog-styles*/
 .create-button{
     border-radius:15px;
-    background-color:deeppink;
+    background-color:aqua;
 }
-
+.delate-button {
+    border-radius: 15px;
+    background-color: deeppink;
+}
 .no-border {
     border: 0;
     box-shadow: none; 
@@ -438,7 +464,12 @@ html {
     height:42px;
     padding:24px;
 }
-.message
+
+/*edit user and chat styles*/
+.edit-image-size{
+    height: 86px;
+    width: 86px;
+}
 
 y {
     /* Margin bottom by footer height */

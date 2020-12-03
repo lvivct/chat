@@ -1,6 +1,6 @@
 ﻿@model chat.ViewModels.EditUserViewModel
 @{
-    var photoPath = "~/images/" + (Model.PhotoPath ?? "no_avatar.png");
+    var photoPath = (Model.PhotoPath ?? "no_avatar.png");
 }
 <img class="card-img-top" src="@photoPath" asp-append-version="true"/> @*вивід картинки*@
 
