@@ -1,0 +1,30 @@
+﻿@model chat.ViewModels.AllChatsViewModel
+
+<a data-toggle="modal" data-target="#exampleModal" data-whatever="" asp-controller="Chat" asp-action="Create" class="col-md-4 float">
+    <i class="fa fa-plus my-float"></i>
+</a>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content back">
+            <div class="modal-header border-bottom-0">
+                <h5 class="modal-title markertext" id="exampleModalLabel">New Chat!</h5>
+                <button type="button" class=" close text-light" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form asp-action="Create" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input asp-for="CurrentChatName" class="w-100 concavecard text-white" id="chat-name" placeholder="Enter chatname..">
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0 ">
+                    <button type="button" class="cardflat headerbutton text-light" data-dismiss="modal">Close</button>
+                    <button type="submit" class="create-button headerbutton text-light">Create</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

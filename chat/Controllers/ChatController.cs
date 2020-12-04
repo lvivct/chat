@@ -96,7 +96,7 @@ namespace chat.Controllers
 
         //[HttpPost("[Action]/{chatId}")]
         [HttpPost]
-        public IActionResult AddMemder(EditChatViewModel model)
+        public IActionResult AddMemder(AllChatsViewModel model)
         {
             var User = AppDb.Users
                 .Where(b => b.UserName == model.NewUserName)
@@ -108,10 +108,10 @@ namespace chat.Controllers
             {
                 AppUserChat newAppUserChat = new AppUserChat
                 {
-                    ChatId = model.ChatId,
+                    ChatId = model.CurrentChatId,
                     UserId = User.Id
                 };
-                if (AppDb.ChatsUsersDatabase.Find(model.ChatId, User.Id) == null)
+                if (AppDb.ChatsUsersDatabase.Find(model.CurrentChatId, User.Id) == null)
                 {
                     AppDb.ChatsUsersDatabase.Add(newAppUserChat);
                     AppDb.SaveChanges();
@@ -166,11 +166,11 @@ namespace chat.Controllers
                 allUsersIds.Add(allUsersChats[i].UserId);
             }
 
-            var viewmodel = new EditChatViewModel
+            var viewmodel = new AllChatsViewModel
             {
-                ChatId = chatId,
-                ChatName = thisChat.ChatName,
-                PhotoPath = thisChat.PhotoPath,
+                CurrentChatId = chatId,
+                CurrentChatName = thisChat.ChatName,
+                CurrentChatPhotoPath = thisChat.PhotoPath,
                 UserNameList = allUsersNames,
                 UserIdList = allUsersIds,
                 EditChat = CurrentUserChat.EditChat,
@@ -182,22 +182,22 @@ namespace chat.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> EditChat(EditChatViewModel model)
+        public async Task<IActionResult> EditChat(AllChatsViewModel model)
         {
-            var thisChat = AppDb.ChatsDatabase.ToList().Find(e => e.ChatId == model.ChatId);
-            thisChat.ChatName = model.ChatName;
+            var thisChat = AppDb.ChatsDatabase.ToList().Find(e => e.ChatId == model.CurrentChatId);
+            thisChat.ChatName = model.CurrentChatName;
 
-            if (model.Photo != null)
+            if (model.NewChatPhoto != null)
             {
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + model.NewChatPhoto.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                model.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                model.NewChatPhoto.CopyTo(new FileStream(filePath, FileMode.Create));
                 thisChat.PhotoPath = uniqueFileName;
             }
 
             await AppDb.SaveChangesAsync();
-            return RedirectToAction("Open", new { model.ChatId });
+            return RedirectToAction("Open", new { model.CurrentChatId });
         }
 
         [HttpPost]

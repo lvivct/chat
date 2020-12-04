@@ -5,14 +5,14 @@
         <div class="col-md-4 order-md-1">
 
             <form method="post" asp-action="Search">
-                <input asp-for="ChatName" class="cardpressed search text-white" type="text" placeholder="Search chat.." name="search">
+                <input asp-for="CurrentChatName" class="cardpressed search text-white" type="text" placeholder="Search chat.." name="search">
                 <button class="search-button" type="submit"><i class="text-white fa fa-search"></i></button>
             </form>
 
             <ul class="list-unstyled">
                 @if (Model.ChatList != null)
                     @foreach (var chat in Model.ChatList)
-                    {                           
+                    {
                         <li class="list-group-flush flex-column align-items-start chatcard chat-item text-light">
                             <form asp-action="SwitchChat" asp-route-chatId="@chat.ChatId" method="post">
                                 <button class="w-100" style=" background:none;">
@@ -36,34 +36,7 @@
                         </li>
                     }
             </ul>
-            <a data-toggle="modal" data-target="#exampleModal" data-whatever="" asp-controller="Chat" asp-action="Create" class="col-md-4 float">
-                <i class="fa fa-plus my-float"></i>
-            </a>
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content back">
-                        <div class="modal-header border-bottom-0">
-                            <h5 class="modal-title markertext" id="exampleModalLabel">New Chat!</h5>
-                            <button type="button" class=" close text-light" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-                        <form asp-action="Create" method="post">
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <input asp-for="ChatName" class="w-100 concavecard text-white" id="chat-name" placeholder="Enter chatname..">
-                                </div>
-                            </div>
-                            <div class="modal-footer border-top-0 ">
-                                <button type="button" class="cardflat headerbutton text-light" data-dismiss="modal">Close</button>
-                                <button type="submit" class="create-button headerbutton text-light">Create</button>
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
+            @Html.Partial("CreateChat", Model)
         </div>
        @if (Model.CurrentChatId != null)
        {
@@ -84,8 +57,9 @@
                                 <i class="ordinary-text-color fas fa-cog"></i>
                             </a>
                             <div class="dropdown-menu back  dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
-                                <a class="dropdown-item-text ordinary-text-color" asp-route-chatId="@Model.CurrentChatId" asp-action="EditChat">Edit Chat</a>
+                                @Html.Partial("EditChat", Model)
                                 <a class="dropdown-item-text ordinary-text-color" asp-route-chatId="@Model.CurrentChatId" asp-action="AddUsersToChat">Add user</a>
+
                             </div>
                         </li>
                     </ul>
@@ -110,8 +84,9 @@
                     @if (Model.MessageList != null)
                         @foreach (var message in Model.MessageList.OrderBy(m => m.When))
                         {
-                            
-                            @if (@User.Identity.Name.Equals(@message.SenderName)) { 
+
+                            @if (@User.Identity.Name.Equals(@message.SenderName))
+                            {
                                 <li class="w-50 ml-auto m-3 ordinary-text-color">
                                     <div class="row cardflat pt-2 pb-2 pr-3 pl-3"> @message.MessageText </div>
                                     <div class="row ml-auto d-flex">
@@ -120,8 +95,10 @@
                                         <img class="p-1 small-profile rounded-circle z-depth-0" src="~/images/@message.PhotoPath" asp-append-version="true" \>
                                     </div>
                                 </li>
-                            } else {
-                               <li class="w-50 mr-auto m-4 ordinary-text-color">
+                            }
+                            else
+                            {
+                                <li class="w-50 mr-auto m-4 ordinary-text-color">
                                     <div class="row cardflat pt-2 pb-2 pr-3 pl-3"> @message.MessageText </div>
                                     <div class="row mr-auto d-flex">
                                         <img class="p-1 small-profile rounded-circle z-depth-0" src="~/images/@message.PhotoPath" asp-append-version="true" \>
@@ -130,7 +107,7 @@
                                     </div>
                                 </li>
                             }
-                            }
+                        }
                     <li id="messagesList">
 
                     </li>
