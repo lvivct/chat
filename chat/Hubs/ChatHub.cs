@@ -1,5 +1,7 @@
 ﻿using chat.Models;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace chat.Hubs
@@ -29,14 +31,24 @@ namespace chat.Hubs
             await AppDb.MessagesDatabase.AddAsync(newmessage);
             await AppDb.SaveChangesAsync();
 
-            await Clients.Group(chatId).SendAsync("ReceiveMessage", user, message, newmessage.When.ToString("ddd MMM hh:mm")); 
+            await Clients.Group("Full " + chatId).SendAsync("ReceiveMessage", user, message, newmessage.When.ToString("ddd MMM hh:mm")); 
 
-            await Clients.Group(chatId).SendAsync("ReceiveMessageToChat", user, message, newmessage.When.ToString("h:m"), chatId);
+            await Clients.Group("Part " + chatId).SendAsync("ReceiveMessageToChat", user, message, newmessage.When.ToString("h:m"), chatId);
         }
-        public async Task AddToGroupAsync(string chatId)
+        public async Task AddToGroupAsync(string userId, string chatId)
         {
-            if(chatId != "")
-                await Groups.AddToGroupAsync(Context.ConnectionId, chatId);
+            if (chatId != "")
+            {
+                await Groups.AddToGroupAsync(Context.ConnectionId, "Full " + chatId);
+
+                var AllUsers = AppDb.Users
+                    .Include(x => x.AppUsersChats)
+                    .ThenInclude(x => x.Chat);
+                var CurrentUser = AllUsers.ToList().Find(e => e.Id == userId);
+                var ChatList = CurrentUser.AppUsersChats;
+                foreach (var item in ChatList)
+                    await Groups.AddToGroupAsync(Context.ConnectionId, "Part " + item.ChatId);
+            }
         }
     }
 }
