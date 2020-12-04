@@ -46,7 +46,7 @@ namespace chat.Controllers
                 {
                     UserName = model.UserName,
                     Email = model.Email,
-                    Photopath = "~/images/no_avatar.png"
+                    Photopath = "no_avatar.png"
                 };
                 var result = await userManager.CreateAsync(user, model.Password);       
                 if (result.Succeeded)
@@ -71,11 +71,11 @@ namespace chat.Controllers
 
                     message.Body = bodyBuilder.ToMessageBody();
 
-                    SmtpClient smtp = new SmtpClient();
-                    smtp.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-                    smtp.Authenticate("viktor01444", "viktorxx2001");
-                    smtp.Send(message);
-                    smtp.Disconnect(true);
+                    //SmtpClient smtp = new SmtpClient();
+                    //smtp.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+                    //smtp.Authenticate("the.shy.king228", "M1803D5XA");
+                    //smtp.Send(message);
+                    //smtp.Disconnect(true);
 
                     await signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Hello", "MainMenu");
