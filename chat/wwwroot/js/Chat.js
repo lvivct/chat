@@ -16,7 +16,7 @@ connection.on("ReceiveMessage", function (user, message, messageDate) {
     messgeCard.innerHTML = message;
     date.innerHTML = messageDate;
     name.innerHTML = user;
-    img.src = document.getElementById("photoPath").value.substring(1);
+    img.src = "/images/" + document.getElementById("photoPath").value;
 
     underMessage.appendChild(img);
     if (document.getElementById("userInput").value === user) {
@@ -48,6 +48,8 @@ connection.on("ReceiveMessage", function (user, message, messageDate) {
     var name = document.createElement("small");
     name.setAttribute("class", "pr-1 ordinary-text-color");
     name.innerHTML = user;
+    underMessage.appendChild(name);
+
      
     li.appendChild(underMessage);
     document.getElementById("messagesList").appendChild(li);

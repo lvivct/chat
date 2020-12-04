@@ -71,11 +71,11 @@ namespace chat.Controllers
 
                     message.Body = bodyBuilder.ToMessageBody();
 
-                    /*SmtpClient smtp = new SmtpClient();
+                    SmtpClient smtp = new SmtpClient();
                     smtp.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
                     smtp.Authenticate("viktor01444", "viktorxx2001");
-                    usmtp.Send(message);
-                    smtp.Disconnect(true);*/
+                    smtp.Send(message);
+                    smtp.Disconnect(true);
 
                     await signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Hello", "MainMenu");
