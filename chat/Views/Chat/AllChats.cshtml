@@ -17,7 +17,11 @@
                             <form asp-action="SwitchChat" asp-route-chatId="@chat.ChatId" method="post">
                                 <button class="w-100" style=" background:none;">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <div class="logo text-white"><i class="fa fa-snapchat"></i></div>
+                                        <div class="logo text-white">
+                                            <img class="p-1 small-profile rounded-circle z-depth-0" src="~/images/@chat.Chat.PhotoPath" asp-append-version="true" \>
+                                        </div>
+
+
                                         <div class="w-100">
                                             <div class="d-flex w-75 justify-content-between">
                                                 <h5 class="mb-1 text-light">@chat.Chat.ChatName</h5>
@@ -46,11 +50,10 @@
                 <div class="container">
                     <ul class="ml-auto navbar-nav navbar-right">
                         <li class="nav-item profile-out justify-content-center">
-
-                            <a class="text-white"> <i class="fa fa-snapchat" style="padding:9px; font-size:32px;"></i></a>
-
+                            <img class="p-1 small-profile rounded-circle z-depth-0" src="~/images/@Model.CurrentChatPhotoPath" asp-append-version="true" \>
                         </li>
-                        <li class="mt-1 nav-item ordinary-text-color"><a class="nav-link">Chat Name</a></li>
+
+                        <li class="mt-1 nav-item ordinary-text-color">@Model.CurrentChatName</li>
                         <li class="mt-1 nav-item dropdown no-border ">
                             <a class="nav-link dropdown-toggle no-border ordinary-text-color " id="navbarDropdownMenuLink-4" data-toggle="dropdown"
                                aria-haspopup="true" aria-expanded="false">
@@ -59,7 +62,6 @@
                             <div class="dropdown-menu back  dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
                                 @Html.Partial("EditChat", Model)
                                 <a class="dropdown-item-text ordinary-text-color" asp-route-chatId="@Model.CurrentChatId" asp-action="AddUsersToChat">Add user</a>
-
                             </div>
                         </li>
                     </ul>
@@ -74,7 +76,6 @@
                 <input hidden value="@Model.CurrentUserId" id="userId" />
                 <input hidden value="@Model.CurrentUserPhotoPath" id="photoPath" />
                 <input id="chatId" asp-for="CurrentChatId" value="@Model.CurrentChatId" type="hidden" />
-
             </div>
 
         <div class="w-100  ml-auto d-flex flex-column">
@@ -108,10 +109,7 @@
                                 </li>
                             }
                         }
-                    <li id="messagesList">
-
-                    </li>
-
+                    <li id="messagesList"></li>
                 </ul>
                 <script>
                     var messageList = document.getElementById("messages");
@@ -132,8 +130,6 @@
                 </script>
             </div>
         </div>
-
-
         </div>
         </div>
     </div>

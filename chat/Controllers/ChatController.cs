@@ -45,22 +45,24 @@ namespace chat.Controllers
                 CurrentUserPhotoPath = CurrentUser.Photopath,
                 ChatList = ChatList
             };
-            AppUserChat CurrentChat;
+            Chat CurrentChat;
             if (chatId == "")
             {
                 if (ChatList.Count() != 0)
-                    CurrentChat = ChatList.FirstOrDefault();
+                    CurrentChat = ChatList.FirstOrDefault().Chat;
                 else
                     return View(model);
             }
             else
             {
-                CurrentChat = ChatList.Find(e => e.ChatId == chatId);
+                CurrentChat = ChatList.Find(e => e.ChatId == chatId).Chat;
             }
             if (CurrentChat == null)
                 return RedirectToAction("Erorr", 404); // не працює чисто фігня
-            model.MessageList = CurrentChat.Chat.Messages.ToList();
+            model.MessageList = CurrentChat.Messages.ToList();
             model.CurrentChatId = CurrentChat.ChatId;
+            model.CurrentChatName = CurrentChat.ChatName;
+            model.CurrentChatPhotoPath = CurrentChat.PhotoPath;
             return View(model);
         }
 
@@ -73,13 +75,13 @@ namespace chat.Controllers
         //[HttpPost("[Action]")]
 
         [HttpPost]
-        public IActionResult Create(string chatName)
+        public IActionResult Create(string CurrentChatName)
         {
-            if(chatName == null)
+            if(CurrentChatName == null)
                 return RedirectToAction("AllChats", "Chat");
             Chat newchat = new Chat
             {
-                ChatName = chatName
+                ChatName = CurrentChatName
             };
             AppDb.ChatsDatabase.Add(newchat);
             AppDb.SaveChanges();

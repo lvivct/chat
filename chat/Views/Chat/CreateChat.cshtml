@@ -1,6 +1,6 @@
 ﻿@model chat.ViewModels.AllChatsViewModel
 
-<a data-toggle="modal" data-target="#exampleModal" data-whatever="" asp-controller="Chat" asp-action="Create" class="col-md-4 float">
+<a data-toggle="modal" data-target="#exampleModal" data-whatever="" asp-action="Create" class="col-md-4 float">
     <i class="fa fa-plus my-float"></i>
 </a>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -14,10 +14,8 @@
             </div>
 
             <form asp-action="Create" method="post">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input asp-for="CurrentChatName" class="w-100 concavecard text-white" id="chat-name" placeholder="Enter chatname..">
-                    </div>
+                <div class="modal-body form-group">
+                    <input asp-for="CurrentChatName" class="w-100 concavecard text-white" placeholder="Enter chatname.." id="none">
                 </div>
                 <div class="modal-footer border-top-0 ">
                     <button type="button" class="cardflat headerbutton text-light" data-dismiss="modal">Close</button>

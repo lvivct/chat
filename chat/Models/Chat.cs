@@ -8,6 +8,10 @@ namespace chat.Models
 {
     public class Chat
     {
+        public Chat()
+        {
+            PhotoPath = "no_chat_avatar.jpg";
+        }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public string ChatId { get; set; }
