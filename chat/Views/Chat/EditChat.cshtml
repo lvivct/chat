@@ -3,101 +3,195 @@
     var photoPath = "~/images/" + (Model.CurrentChatPhotoPath ?? "no_chat_avatar.jpg");
 }
 
-            @*<h1>Hi</h1>
-        @if (Model.AddUsersToChat)
-        {
-            <form asp-controller="Chat" asp-action="AddMemder" asp-route-ChatId="@Model.ChatId">
-                <div asp-validation-summary="All" class="text-danger"></div>
 
-                <label asp-for="NewUserName"></label>
-                <div><input asp-for="NewUserName" placeholder="WriteUserName"></div>
+<a data-toggle="modal" data-target="#editMembersModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabe2" aria-hidden="true" class="ordinary-text-color">
+    Edit Members
+</a>
 
-                <div><button type="submit" asp-action="AddMemder" asp-route-chatId="@Model.ChatId">Add</button></div>
-            </form>
-        }
+<a data-toggle="modal" data-target="#editChatModal">
+    Edit Chat
+</a>
 
-        <form method="post" asp-route-chatId="@Model.ChatId" asp-action="Leave">
-            <div><button>LeveChat</button></div>
-        </form>
-
-        @for (int i = 0; i < Model.UserNameList.Count; ++i)
-        {
-            <div>
-                <label>@Model.UserNameList[i]</label>
-                @if (Model.KickUsers)
-                {
-                    <form method="post" asp-action="KickUser"
-                          asp-route-userId="@Model.UserIdList[i]"
-                          asp-route-chatId="@Model.ChatId">
-                        <button>Kick</button>
-                    </form>
-                }
-                @if (Model.GiveRoles)
-                {
-                    <a asp-action="ChangeRole" asp-route-userId="@Model.UserIdList[i]"
-                       asp-route-chatId="@Model.ChatId">ChangeRole</a>
-                }
-            </div>
-        }*@
-            <div class="d-flex justify-content-center">
-                <button type="button" class="btn signupbutton" data-toggle="modal" data-target="#editChatModal">
-                    Edit Chat
+<div class="modal fade" id="editMembersModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content back">
+            <div class="modal-header border-aqua">
+                <h5 class="modal-title markertext" id="exampleModalLabel">Edit @Model.CurrentChatName</h5>
+                <button type="button" class=" close text-light" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
-            <div class="modal fade" id="editChatModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content back">
-                        <div class="modal-header border-aqua">
-                            <h5 class="modal-title markertext" id="exampleModalLabel">Edit @Model.CurrentChatName</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            </button>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <form asp-controller="Chat" asp-action="AddMemder">
+                        <label asp-for="NewUserName"></label>
+                        <div class="d-flex flex-row bd-highlight mb-3 mt-2" style="margin-left:24px;">
+                            <input asp-for="NewUserName" placeholder="WriteUserName" class="w-100 concavecard text-white mr-3" id="chat-name">
+                            <button id="sendButton" class="search-button submit ml-auto mt-auto mb-auto" asp-action="AddMemder" asp-route-chatId="@Model.CurrentChatId" style="width:38px"><i class="text-light fa fa-plus" aria-hidden="true"></i></button>
                         </div>
-                        <div class="modal-body">
-                            <form enctype="multipart/form-data" method="post" asp-action="EditChat" asp-route-chatId="@Model.CurrentChatId">
-                                <div class="row justify-content-center">
-                                    <img class="card-img-top  rounded-circle edit-image-size" src="@photoPath" asp-append-version="true" /> @*вивід картинки*@
-                                </div>
+                    </form>
+                    <ul id="messages" class="list-unstyled list-unstyled-users mb-auto">
+                        @try
+                        {
+                            @for (int i = 0; i < Model.UserNameList.Count; ++i)
+                            {
+                                <li class="list-group-flush flex-column align-items-start chatcard chat-item p-2">
+                                    <div class="d-flex flex-row bd-highlight ">
+                                        <div class="avatar profile-out p-2">
+                                            <img class="profile-image rounded-circle z-depth-0" src="~/images/no_avatar.png" asp-append-version="true" />
+                                        </div>
+                                        <div class="mt-auto mb-auto pt-1">
+                                            <h5 class=" ml-3 text-light">@Model.UserNameList[i]</h5>
+                                        </div>
+                                        <div class="mt-auto mb-auto p-2 ml-auto dropdown poiter">
+                                            <div type="button" id="dropdownMenuButton" data-toggle="dropdown">
+                                                <i class="markertext fas fa-user-edit"></i>
+                                            </div>
+                                            <div class="dropdown">
+                                                <div class="dropdown-menu dropdown-large back" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item-text ordinary-text-color" href="#">
+                                                        <div class="row justify-content-center">
+                                                            <div class="check-button">
+                                                                <div for="click" class="toggle" onclick="lightText('giveroles')">
+                                                                    <input type="checkbox" id="give" name="give">
+                                                                </div>
+                                                            </div>
+                                                            <nobr><label id="giveroles" class="text" for="give"></label></nobr>
+                                                        </div>
+                                                    </a>
+                                                    <a class="dropdown-item-text ordinary-text-color" href="#">
+                                                        <div class="row justify-content-center">
+                                                            <div class="check-button">
+                                                                <div for="click" class="toggle" onclick="lightText('kickusers')">
+                                                                    <input type="checkbox" id="kick" name="kick">
+                                                                </div>
+                                                            </div>
+                                                            <nobr><label id="kickusers" class="text" for="kick"></label></nobr>
+                                                        </div>
+                                                    </a>
+                                                    <a class="dropdown-item-text ordinary-text-color" href="#">
+                                                        <div class="row justify-content-center">
+                                                            <div class="check-button">
+                                                                <div for="click" class="toggle" onclick="lightText('editchat')">
+                                                                    <input type="checkbox" id="edit" name="edit">
+                                                                </div>
+                                                            </div>
+                                                            <nobr><label id="editchat" class="text" for="edit"></label></nobr>
+                                                        </div>
+                                                    </a>
+                                                    <a class="dropdown-item-text ordinary-text-color" href="#">
+                                                        <div class="row justify-content-center">
+                                                            <div class="check-button">
+                                                                <div for="click" class="toggle" onclick="lightText('addusers')">
+                                                                    <input type="checkbox" id="add" name="add">
+                                                                </div>
+                                                            </div>
+                                                            <nobr><label id="addusers" class="text" for="add"></label></nobr>
+                                                        </div>
+                                                    </a>
 
-                                <div class="row justify-content-center"><label class="ordinary-text" asp-for="NewChatPhoto"></label></div>
-                                <div class="custom-file">
-                                    <input asp-for="NewChatPhoto" class="form-control custom-file-input w-100 concavecard text-white">
-                                    <label class="custom-file-label back text-white p-2"> Choose File...</label>
-                                </div>
+                                                    <script>
+                                                        function lightText(textId) {
+                                                            document.getElementById(textId).classList.toggle('check');
+                                                        }
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-auto mb-auto p-2 secondmarkertext-color pointer">
+                                            <form method="post" asp-action="KickUser"
+                                                  asp-route-userId="@Model.UserIdList[i]"
+                                                  asp-route-chatId="@Model.CurrentChatId">
+                                                <i class=" fas fa-user-times pointer"></i>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        }
+                        catch (System.NullReferenceException e)
+                        {
+                        }
+                    </ul>
 
-
-                                <div class="mt-5 mb-5">
-                                    <label asp-for="CurrentChatName"></label>
-                                    @*TODO: виправити помилку зміни імені*@
-                                    <input class="w-100 concavecard text-white" value="@Model.CurrentChatName" asp-for="CurrentChatName" />
-                                    <span asp-validation-for="CurrentChatName" class="text-danger"></span>
-                                </div>
-                                @section Scripts {
-                                    <script>
-                                        $(document).ready(function () {
-                                            $('.custom-file-input').on("change", function () {
-                                                var fileName = $(this).val().split("\\").pop();
-                                                $(this).next('.custom-file-label').html(fileName);
-                                            });
-                                        });
-                                    </script>
-                                }
-                            </form>
-
-                        </div>
-                        <div class="modal-footer">
-                            <div class="mr-auto">
-                                <form method="post" asp-action="DeleteChat" asp-route-chatId="@Model.CurrentChatId">
-                                    <button type="button" class="delate-button headerbutton text-light">delete chat </button>
-                                </form>
-                            </div>
-
-                            <button type="button" class="cardflat headerbutton text-light" data-dismiss="modal">Close</button>
-                            <form enctype="multipart/form-data" method="post" asp-action="EditChat" asp-route-chatId="@Model.CurrentChatId">
-                                <button class="create-button headerbutton text-light">Save</button>
-                            </form>
-                        </div>
-                    </div>
                 </div>
             </div>
+            <div class="modal-footer ">
+                <button type="button" class="cardflat headerbutton text-light" data-dismiss="modal">Close</button>
+                <button type="submit" class="create-button headerbutton text-light">Create</button>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+@* <form method="post" asp-route-chatId="@Model.ChatId" asp-action="Leave">
+        <div><button>LeveChat</button></div>
+    </form>*@
+
+
+
+
+<div class="modal fade" id="editChatModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content back">
+            <div class="modal-header border-aqua">
+                <h5 class="modal-title markertext" id="exampleModalLabel">Edit @Model.CurrentChatName</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form enctype="multipart/form-data" method="post" asp-action="EditChat" asp-route-chatId="@Model.CurrentChatId">
+                    <div class="row justify-content-center">
+                        <img class="card-img-top  rounded-circle edit-image-size" src="@photoPath" asp-append-version="true" /> @*вивід картинки*@
+                    </div>
+
+                    <div class="row justify-content-center"><label class="ordinary-text" asp-for="NewChatPhoto"></label></div>
+                    <div class="custom-file">
+                        <input asp-for="NewChatPhoto" class="form-control custom-file-input w-100 concavecard text-white">
+                        <label class="custom-file-label back text-white p-2"> Choose File...</label>
+                    </div>
+
+
+                    <div class="mt-5 mb-5">
+                        <label asp-for="CurrentChatName"></label>
+                        @*TODO: виправити помилку зміни імені*@
+                        <input class="w-100 concavecard text-white" value="@Model.CurrentChatName" asp-for="CurrentChatName" />
+                        <span asp-validation-for="CurrentChatName" class="text-danger"></span>
+                    </div>
+                    @section Scripts {
+                        <script>
+                            $(document).ready(function () {
+                                $('.custom-file-input').on("change", function () {
+                                    var fileName = $(this).val().split("\\").pop();
+                                    $(this).next('.custom-file-label').html(fileName);
+                                });
+                            });
+                        </script>
+                    }
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <div class="mr-auto">
+                    <form method="post" asp-action="DeleteChat" asp-route-chatId="@Model.CurrentChatId">
+                        <button type="button" class="delate-button headerbutton text-light">delete chat </button>
+                    </form>
+                </div>
+
+                <button type="button" class="cardflat headerbutton text-light" data-dismiss="modal">Close</button>
+                <form enctype="multipart/form-data" method="post" asp-action="EditChat" asp-route-chatId="@Model.CurrentChatId">
+                    <button class="create-button headerbutton text-light">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 

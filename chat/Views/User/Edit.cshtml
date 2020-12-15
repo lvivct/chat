@@ -2,7 +2,8 @@
 @{
     var photoPath = "~/images/" + (Model.PhotoPath ?? "no_avatar.png");
 }
-<img class="card-img-top" src="@photoPath" asp-append-version="true"/> @*вивід картинки*@
+
+<img class="card-img-top" src="@photoPath" asp-append-version="true" /> @*вивід картинки*@
 
 <form enctype="multipart/form-data" asp-controller="User" asp-action="Edit" style="color:deeppink">
 
@@ -56,6 +57,7 @@
 <div>
     <a asp-action="Hello" asp-controller="MainMenu">To Menu</a>
 </div>
+
 
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/UserNameChanged.js"></script>
