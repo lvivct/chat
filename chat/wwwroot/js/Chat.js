@@ -26,8 +26,7 @@ connection.on("ReceiveMessage", function (user, message, messageDate) {
         date.setAttribute("class", "ml-auto pr-1 ordinary-text-color");    
         name.setAttribute("class", "pr-1 ordinary-text-color");   
         img.setAttribute("class", "p-1 small-profile rounded-circle z-depth-0");
-
-        
+   
         underMessage.appendChild(date);
         underMessage.appendChild(name);
         underMessage.appendChild(img);
@@ -48,8 +47,6 @@ connection.on("ReceiveMessage", function (user, message, messageDate) {
     var name = document.createElement("small");
     name.setAttribute("class", "pr-1 ordinary-text-color");
     name.innerHTML = user;
-    underMessage.appendChild(name);
-
      
     li.appendChild(underMessage);
     document.getElementById("messagesList").appendChild(li);

@@ -1,7 +1,79 @@
 ﻿@model chat.ViewModels.EditUserViewModel
 @{
-    var photoPath = "~/images/" + (Model.PhotoPath ?? "no_avatar.png");
+    var photoPath = "/images/" + (Model.PhotoPath ?? "no_avatar.png");
 }
+<a class="pointer" data-toggle="modal" data-target="#editAccountModal">
+    Edit
+</a>
+<div class="modal fade" id="editAccountModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form enctype="multipart/form-data" asp-controller="User" asp-action="Edit" style="color:deeppink">
+            <div class="modal-content back">
+                <div class="modal-header border-aqua">
+                    <h5 class="modal-title markertext" id="exampleModalLabel">Edit @Model.UserName</h5>
+                    <button type="button" class=" close text-light" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row justify-content-center">
+                        <img class="card-img-top  rounded-circle edit-image-size" src="@photoPath" asp-append-version="true" /> @*вивід картинки*@
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <label class="ordinary-text" asp-for="Photo"></label>
+                    </div>
+                    <div class="custom-file">
+                        <input asp-for="Photo" class="form-control custom-file-input w-100 concavecard text-white">
+                        <label class="custom-file-label back text-white p-2"> Choose File...</label>
+                    </div>
+
+
+                    <div class="mt-5 mb-2">
+                        <label class="text-white" asp-for="UserName"></label>
+
+                        <input class="w-100 concavecard text-white" value="@Model.UserName" asp-for="UserName" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="mt-3 mb-5">
+                        <label class="text-white" asp-for="Email"></label>
+                        @*TODO: виправити помилку зміни імені*@
+                        <input class="w-100 concavecard text-white" value="@Model.Email" asp-for="Email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="mt-5 mb-5 justify-content-center">
+                        <a asp-action="ChangePassword" asp-controller="User">Change Password</a>
+                    </div>
+
+
+                    @section Scripts {
+                        <script>
+                            $(document).ready(function () {
+                                $('.custom-file-input').on("change", function () {
+                                    var fileName = $(this).val().split("\\").pop();
+                                    $(this).next('.custom-file-label').html(fileName);
+                                });
+                            });
+                        </script>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <div class="mr-auto">                      
+                            <button type="button" class="delate-button headerbutton text-light" method="post" asp-action="DeleteUser">delete</button>
+                    </div>
+
+                    <button type="button" class="cardflat headerbutton text-light" data-dismiss="modal">Close</button>
+                    <button class="create-button headerbutton text-light" type="submit" data-dismiss="modal">Save</button>
+                </div>
+
+            </div>
+            </form>
+    </div>
+</div>
 
 <img class="card-img-top" src="@photoPath" asp-append-version="true" /> @*вивід картинки*@
 
@@ -32,16 +104,7 @@
 
     <button type="submit">confirm changes</button>
 
-    @section Scripts {
-        <script>
-            $(document).ready(function () {
-                $('.custom-file-input').on("change", function () {
-                    var fileName = $(this).val().split("\\").pop();
-                    $(this).next('.custom-file-label').html(fileName);
-                });
-            });
-        </script>
-    }
+   
 </form>
 
 
