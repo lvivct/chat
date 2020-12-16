@@ -325,6 +325,19 @@ input:checked:before {
     border-radius: 50%;
 }
 
+.chat-image {
+    width: 34px;
+    height: 34px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+.chat-navbar-image {
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
 .small-profile {
     width: 24px;
     height: 24px;

@@ -18,10 +18,8 @@
                                 <button class="w-100" style=" background:none;">
                                     <div class="d-flex w-100 justify-content-between">
                                         <div class="logo text-white">
-                                            <img class="p-1 small-profile rounded-circle z-depth-0" src="~/images/@chat.Chat.PhotoPath" asp-append-version="true" \>
+                                            <img class="p-1 chat-navbar-image rounded-circle z-depth-0" src="~/images/@chat.Chat.PhotoPath" asp-append-version="true" \>
                                         </div>
-
-
                                         <div class="w-100">
                                             <div class="d-flex w-75 justify-content-between">
                                                 <h5 class="mb-1 text-light">@chat.Chat.ChatName</h5>
@@ -50,21 +48,22 @@
             <nav class="navbar navbar-expand  flex-xl-grow-1 w-100  cardflat">
                 <div class="container">
                     <ul class="ml-auto navbar-nav navbar-right">
-                        <li class="nav-item profile-out justify-content-center">
-                            <img class="p-1 small-profile rounded-circle z-depth-0" src="~/images/@Model.CurrentChatPhotoPath" asp-append-version="true" \>
+                        <li class="nav-link profile-out justify-content-center">
+                            <img class="chat-image rounded-circle z-depth-0" src="~/images/@Model.CurrentChatPhotoPath" asp-append-version="true" \>
                         </li>
 
-                        <li class="mt-1 nav-item ordinary-text-color">@Model.CurrentChatName</li>
-                        <li class="mt-1 nav-item dropdown no-border ">
-                            <a class="nav-link dropdown-toggle no-border ordinary-text-color " id="navbarDropdownMenuLink-4" data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">
-                                <i class="ordinary-text-color fas fa-cog"></i>
-                            </a>
-                            <div class="dropdown-menu back  dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
-                                @Html.Partial("EditChat", Model)
-                                <a class="dropdown-item-text ordinary-text-color" asp-route-chatId="@Model.CurrentChatId" asp-action="AddUsersToChat">Add user</a>
-                            </div>
-                        </li>
+                        <li class="mt-auto mb-auto ml-1 mr-1 nav-item ordinary-text-color">@Model.CurrentChatName</li>
+                        <li class="mt-auto mb-auto nav-item ordinary-text-color">@Html.Partial("EditChat", Model)</li>
+                        @* <li class="mt-1 nav-item dropdown no-border ">
+            <a class="nav-link dropdown-toggle no-border ordinary-text-color " id="navbarDropdownMenuLink-4" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                <i class="ordinary-text-color fas fa-cog"></i>
+            </a>
+            <div class="dropdown-menu back  dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
+
+                <a class="dropdown-item-text ordinary-text-color" asp-route-chatId="@Model.CurrentChatId" asp-action="AddUsersToChat">Add user</a>
+            </div>
+        </li>*@
                     </ul>
                 </div>
             </nav>
