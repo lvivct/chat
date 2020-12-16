@@ -91,12 +91,12 @@ namespace chat
 
                 endpoints.MapControllerRoute(
                     name: "DefaultWithCulture",
-                    pattern: "{culture=en-us}/{controller=MainMenu}/{action=Hello}/{id?}"        
+                    pattern: "{culture=en-us}/{controller=Chat}/{action=AllChats}/{id?}"        
                     ); 
 
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=MainMenu}/{action=Hello}/{id?}");
+                    pattern: "{controller=Chat}/{action=AllChats}/{id?}");
 
                 endpoints.MapHub<ChatHub>("/chathub");
             });
