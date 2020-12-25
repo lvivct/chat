@@ -78,7 +78,7 @@ namespace chat.Controllers
                     //smtp.Disconnect(true);
 
                     await signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Hello", "MainMenu");
+                    return RedirectToAction("AllChats", "Chat");
                 }
                 foreach (var error in result.Errors)
                 {
@@ -104,7 +104,7 @@ namespace chat.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Hello", "MainMenu");
+                    return RedirectToAction("AllChats", "Chat");
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");

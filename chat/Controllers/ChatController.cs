@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using chat.Models;
 using chat.ViewModels;
+using chat.ViewModels.Chat;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -39,30 +40,58 @@ namespace chat.Controllers
             var CurrentUser = AllUsers.ToList().Find(e => e.Id == CurrentUserId);
             var ChatList = CurrentUser.AppUsersChats.ToList();
 
-            var model = new AllChatsViewModel
-            {
-                CurrentUserId = CurrentUserId,
-                CurrentUserPhotoPath = CurrentUser.Photopath,
-                ChatList = ChatList
-            };
             Chat CurrentChat;
             if (chatId == "")
             {
                 if (ChatList.Count() != 0)
                     CurrentChat = ChatList.FirstOrDefault().Chat;
                 else
-                    return View(model);
+                {
+                    var _model = new AllChatsViewModel
+                    {
+                        CurrentUserId = CurrentUserId,
+                        CurrentUserPhotoPath = CurrentUser.Photopath,
+                        ChatList = ChatList
+                    };
+                    return View(_model);
+                }
             }
             else
-            {
                 CurrentChat = ChatList.Find(e => e.ChatId == chatId).Chat;
-            }
             if (CurrentChat == null)
                 return RedirectToAction("Erorr", 404); // не працює чисто фігня
-            model.MessageList = CurrentChat.Messages.ToList();
-            model.CurrentChatId = CurrentChat.ChatId;
-            model.CurrentChatName = CurrentChat.ChatName;
-            model.CurrentChatPhotoPath = CurrentChat.PhotoPath;
+
+            var allUsersChats = CurrentChat.AppUsersChats.ToList();
+            var CurrentUserChat = allUsersChats.Find(e => e.UserId == CurrentUserId);
+
+
+            var allUsersNames = new List<string>();
+            var allUsersIds = new List<string>();
+
+
+            for (int i = 0; i < allUsersChats.Count; ++i)
+            {
+                allUsersNames.Add(allUsersChats[i].User.UserName);
+                allUsersIds.Add(allUsersChats[i].UserId);
+            }
+
+            var model = new AllChatsViewModel
+            {
+                CurrentUserId = CurrentUserId,
+                CurrentUserPhotoPath = CurrentUser.Photopath,
+                ChatList = ChatList,
+                MessageList = CurrentChat.Messages.ToList(),
+                CurrentChatId = CurrentChat.ChatId,
+                CurrentChatName = CurrentChat.ChatName,
+                CurrentChatPhotoPath = CurrentChat.PhotoPath,
+                UserNameList = allUsersNames,
+                UserIdList = allUsersIds,
+
+                EditChat = CurrentUserChat.EditChat,
+                KickUsers = CurrentUserChat.KickUsers,
+                GiveRoles = CurrentUserChat.GiveRoles,
+                AddUsersToChat = CurrentUserChat.AddUsersToChat
+            };    
             return View(model);
         }
 
@@ -98,7 +127,7 @@ namespace chat.Controllers
 
         //[HttpPost("[Action]/{chatId}")]
         [HttpPost]
-        public IActionResult AddMemder(AllChatsViewModel model)
+        public IActionResult AddMemder(AddMemderViewModel model)
         {
             var User = AppDb.Users
                 .Where(b => b.UserName == model.NewUserName)
@@ -148,43 +177,8 @@ namespace chat.Controllers
             return RedirectToAction("AllChats");
         }
 
-        [HttpGet]
-        public IActionResult EditChat(string chatId)
-        {
-            var thisChat = AppDb.ChatsDatabase.Include(e => e.AppUsersChats)
-                                         .ThenInclude(e => e.User)
-                                         .ToList().Find(e => e.ChatId == chatId);
-            var allUsersChats = thisChat.AppUsersChats.ToList();
-
-            var CurrentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var CurrentUserChat = allUsersChats.Find(e => e.UserId == CurrentUserId);
-
-
-            var allUsersNames = new List<string>();
-            var allUsersIds = new List<string>();
-            for (int i = 0; i < allUsersChats.Count; ++i)
-            {
-                allUsersNames.Add(allUsersChats[i].User.UserName);
-                allUsersIds.Add(allUsersChats[i].UserId);
-            }
-
-            var viewmodel = new AllChatsViewModel
-            {
-                CurrentChatId = chatId,
-                CurrentChatName = thisChat.ChatName,
-                CurrentChatPhotoPath = thisChat.PhotoPath,
-                UserNameList = allUsersNames,
-                UserIdList = allUsersIds,
-                EditChat = CurrentUserChat.EditChat,
-                KickUsers = CurrentUserChat.KickUsers,
-                GiveRoles = CurrentUserChat.GiveRoles,
-                AddUsersToChat = CurrentUserChat.AddUsersToChat
-            };
-            return View(viewmodel);
-        }
-        
         [HttpPost]
-        public async Task<IActionResult> EditChat(AllChatsViewModel model)
+        public async Task<IActionResult> EditChat(EditChatViewModel model)
         {
             var thisChat = AppDb.ChatsDatabase.ToList().Find(e => e.ChatId == model.CurrentChatId);
             thisChat.ChatName = model.CurrentChatName;
@@ -199,7 +193,7 @@ namespace chat.Controllers
             }
 
             await AppDb.SaveChangesAsync();
-            return RedirectToAction("Open", new { model.CurrentChatId });
+            return RedirectToAction("AllChats", new { model.CurrentChatId });
         }
 
         [HttpPost]
@@ -214,7 +208,12 @@ namespace chat.Controllers
             AppDb.ChatsUsersDatabase.Remove(UserChat);
             await AppDb.SaveChangesAsync();
 
-            return RedirectToAction("EditChat", new { chatId });
+            var CurrentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (userId != CurrentUserId)
+                return RedirectToAction("AllChats", new { chatId });
+            else
+                return RedirectToAction("AllChats");
         }
 
         [HttpGet]

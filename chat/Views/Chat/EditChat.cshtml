@@ -24,16 +24,18 @@
 
             <div class="modal-body">
                 <div class="form-group">
-                    <form asp-controller="Chat" asp-action="AddMemder">
-                        <label asp-for="NewUserName"></label>
+
+                    @if (Model.AddUsersToChat)
+                    {
+                    <form method="post" asp-action="AddMemder" asp-route-CurrentChatId="@Model.CurrentChatId">
+                        <label>add user</label>
                         <div class="d-flex flex-row bd-highlight mb-3 mt-2" style="margin-left:24px;">
                             <input asp-for="NewUserName" placeholder="WriteUserName" class="w-100 concavecard text-white mr-3" id="chat-name">
-                            <button id="sendButton" class="search-button submit ml-auto mt-auto mb-auto" asp-action="AddMemder" asp-route-chatId="@Model.CurrentChatId" style="width:38px"><i class="text-light fa fa-plus" aria-hidden="true"></i></button>
+                            <button method="post" class="search-button submit ml-auto mt-auto mb-auto" style="width:38px"><i class="text-light fa fa-plus" aria-hidden="true"></i></button>
                         </div>
                     </form>
+                    }
                     <ul id="messages" class="list-unstyled list-unstyled-users mb-auto">
-                        @try
-                        {
                             @for (int i = 0; i < Model.UserNameList.Count; ++i)
                             {
                                 <li class="list-group-flush flex-column align-items-start chatcard chat-item p-2">
@@ -45,74 +47,85 @@
                                             <h5 class=" ml-3 text-light">@Model.UserNameList[i]</h5>
                                         </div>
                                         <div class="mt-auto mb-auto p-2 ml-auto dropdown poiter">
-                                            <div type="button" id="dropdownMenuButton" data-toggle="dropdown">
-                                                <i class="markertext fas fa-user-edit"></i>
-                                            </div>
-                                            <div class="dropdown">
-                                                <div class="dropdown-menu dropdown-large back" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item-text ordinary-text-color" href="#">
-                                                        <div class="row justify-content-center">
-                                                            <div class="check-button">
-                                                                <div for="click" class="toggle" onclick="lightText('giveroles')">
-                                                                    <input type="checkbox" id="give" name="give">
-                                                                </div>
-                                                            </div>
-                                                            <nobr><label id="giveroles" class="text" for="give"></label></nobr>
-                                                        </div>
-                                                    </a>
-                                                    <a class="dropdown-item-text ordinary-text-color" href="#">
-                                                        <div class="row justify-content-center">
-                                                            <div class="check-button">
-                                                                <div for="click" class="toggle" onclick="lightText('kickusers')">
-                                                                    <input type="checkbox" id="kick" name="kick">
-                                                                </div>
-                                                            </div>
-                                                            <nobr><label id="kickusers" class="text" for="kick"></label></nobr>
-                                                        </div>
-                                                    </a>
-                                                    <a class="dropdown-item-text ordinary-text-color" href="#">
-                                                        <div class="row justify-content-center">
-                                                            <div class="check-button">
-                                                                <div for="click" class="toggle" onclick="lightText('editchat')">
-                                                                    <input type="checkbox" id="edit" name="edit">
-                                                                </div>
-                                                            </div>
-                                                            <nobr><label id="editchat" class="text" for="edit"></label></nobr>
-                                                        </div>
-                                                    </a>
-                                                    <a class="dropdown-item-text ordinary-text-color" href="#">
-                                                        <div class="row justify-content-center">
-                                                            <div class="check-button">
-                                                                <div for="click" class="toggle" onclick="lightText('addusers')">
-                                                                    <input type="checkbox" id="add" name="add">
-                                                                </div>
-                                                            </div>
-                                                            <nobr><label id="addusers" class="text" for="add"></label></nobr>
-                                                        </div>
-                                                    </a>
-
-                                                    <script>
-                                                        function lightText(textId) {
-                                                            document.getElementById(textId).classList.toggle('check');
-                                                        }
-                                                    </script>
+                                            @if (Model.GiveRoles)
+                                            {
+                                                <div type="button" id="dropdownMenuButton" data-toggle="dropdown">
+                                                    <i class="markertext fas fa-user-edit"></i>
                                                 </div>
-                                            </div>
+
+
+                                                <div class="dropdown">
+                                                    <div class="dropdown-menu dropdown-large back" aria-labelledby="dropdownMenuButton">
+
+                                                        <a class="dropdown-item-text ordinary-text-color" href="#">
+                                                            <div class="row justify-content-center">
+                                                                <div class="check-button">
+                                                                    <div for="click" class="toggle" onclick="lightText('giveroles')">
+                                                                        <input type="checkbox" asp-for="GiveRoles" value="@Model.GiveRoles">
+                                                                    </div>
+                                                                </div>
+                                                                <nobr><label id="giveroles" class="text" for="give"></label></nobr>
+                                                            </div>
+                                                        </a>
+
+                                                        <a class="dropdown-item-text ordinary-text-color" href="#">
+                                                            <div class="row justify-content-center">
+                                                                <div class="check-button">
+                                                                    <div for="click" class="toggle" onclick="lightText('kickusers')">
+                                                                        <input type="checkbox" asp-for="KickUsers" value="@Model.KickUsers">
+                                                                    </div>
+                                                                </div>
+                                                                <nobr><label id="kickusers" class="text" for="kick"></label></nobr>
+                                                            </div>
+                                                        </a>
+
+                                                        <a class="dropdown-item-text ordinary-text-color" href="#">
+                                                            <div class="row justify-content-center">
+                                                                <div class="check-button">
+                                                                    <div for="click" class="toggle" onclick="lightText('editchat')">
+                                                                        <input type="checkbox" asp-for="EditChat" value="@Model.EditChat">
+                                                                    </div>
+                                                                </div>
+                                                                <nobr><label id="editchat" class="text" for="edit"></label></nobr>
+                                                            </div>
+                                                        </a>
+
+                                                        <a class="dropdown-item-text ordinary-text-color" href="#">
+                                                            <div class="row justify-content-center">
+                                                                <div class="check-button">
+                                                                    <div for="click" class="toggle" onclick="lightText('addusers')">
+                                                                        <input type="checkbox" asp-for="AddUsersToChat" value="@Model.AddUsersToChat">
+                                                                    </div>
+                                                                </div>
+                                                                <nobr><label id="addusers" class="text" for="add"></label></nobr>
+                                                            </div>
+                                                        </a>
+
+                                                        <script>
+                                                            function lightText(textId) {
+                                                                document.getElementById(textId).classList.toggle('check');
+                                                            }
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            }
                                         </div>
+
+                                        @if (Model.KickUsers)
+                                        {
                                         <div class="mt-auto mb-auto p-2 secondmarkertext-color pointer">
                                             <form method="post" asp-action="KickUser"
                                                   asp-route-userId="@Model.UserIdList[i]"
                                                   asp-route-chatId="@Model.CurrentChatId">
-                                                <i class=" fas fa-user-times pointer"></i>
+                                                <button method="post" class=" fas fa-user-times pointer"></button>
                                             </form>
                                         </div>
+                                        }
                                     </div>
                                 </li>
                             }
-                        }
-                        catch (System.NullReferenceException e)
-                        {
-                        }
+                        
+
                     </ul>
 
                 </div>
@@ -145,8 +158,9 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
-            <div class="modal-body">
-                <form enctype="multipart/form-data" method="post" asp-action="EditChat" asp-route-chatId="@Model.CurrentChatId">
+
+            <form enctype="multipart/form-data" method="post" asp-action="EditChat" asp-route-CurrentChatId="@Model.CurrentChatId">
+                <div class="modal-body">
                     <div class="row justify-content-center">
                         <img class="card-img-top  rounded-circle edit-image-size" src="@photoPath" asp-append-version="true" /> @*вивід картинки*@
                     </div>
@@ -160,7 +174,6 @@
 
                     <div class="mt-5 mb-5">
                         <label asp-for="CurrentChatName"></label>
-                        @*TODO: виправити помилку зміни імені*@
                         <input class="w-100 concavecard text-white" value="@Model.CurrentChatName" asp-for="CurrentChatName" />
                         <span asp-validation-for="CurrentChatName" class="text-danger"></span>
                     </div>
@@ -174,21 +187,19 @@
                             });
                         </script>
                     }
-                </form>
-
-            </div>
-            <div class="modal-footer">
-                <div class="mr-auto">
-                    <form method="post" asp-action="DeleteChat" asp-route-chatId="@Model.CurrentChatId">
-                        <button type="button" class="delate-button headerbutton text-light">delete chat </button>
-                    </form>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="cardflat headerbutton text-light" data-dismiss="modal">Close</button>
+                    <button method="post" class="create-button headerbutton text-light">Save</button>
+                </div>
+            </form>
 
-                <button type="button" class="cardflat headerbutton text-light" data-dismiss="modal">Close</button>
-                <form enctype="multipart/form-data" method="post" asp-action="EditChat" asp-route-chatId="@Model.CurrentChatId">
-                    <button class="create-button headerbutton text-light">Save</button>
+            <div class="mr-auto">
+                <form method="post" asp-action="DeleteChat" asp-route-chatId="@Model.CurrentChatId">
+                    <button method="post" class="delate-button headerbutton text-light">delete chat </button>
                 </form>
             </div>
+
         </div>
     </div>
 </div>
